@@ -1,0 +1,32 @@
+import React from 'react'
+
+const DemoSection = () => {
+  return (
+    <>
+       <section className="w-full flex justify-center items-center py-12 md:py-24 lg:py-32" id="demo">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  See Our Extension in Action
+                </h2>
+                <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+                  Watch our demo video to see how our extension can streamline
+                  your workflow and boost your productivity.
+                </p>
+              </div>
+              <div className="w-full max-w-[800px] aspect-video overflow-hidden rounded-xl">
+                <video
+                  src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                  controls
+                />
+                <span className="rounded-md bg-gray-100 dark:bg-gray-800" />
+              </div>
+            </div>
+          </div>
+        </section>
+    </>
+  )
+}
+
+export default DemoSection
