@@ -1,7 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Card } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -13,24 +19,30 @@ import {
 } from "@/components/ui/accordion";
 import WhyPremium from "./WhyPremium";
 import { toast } from "react-toastify";
-import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
-const plan = [
-  {
-    label: "Monthly",
-    value: "1.99",
-    currency: "$",
-    lookup_id: "mt_live_monthly_look_key",
-  },
-];
-const PricingSection = () => {
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import getStripe from "@/utils/getStripe";
+
+interface Subscription {
+  id: string;
+  trial_end: number; // Unix timestamp
+  status: string;
+  default_payment_method?: {
+    card?: {
+      last4: string;
+    };
+  };
+}
+
+const PricingSection: React.FC = () => {
   const router = useRouter();
   const [message, setMessage] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
   const [sessionId, setSessionId] = useState<string>("");
-  const { data: session, status } = useSession();
+  const { data: session, update } = useSession();
+  console.log("sessiondsfgsdfg123", session);
 
-  console.log(session?.user?.email,'sessionsession')
   const parseQueryParams = () => {
     const query = new URLSearchParams(window.location.search);
     if (query.get("success")) {
@@ -43,28 +55,55 @@ const PricingSection = () => {
       );
     }
   };
-
+  console.log("sessionIdsessionIdsessionId", sessionId);
   useEffect(() => {
     parseQueryParams();
   }, [sessionId]);
 
-
-  const handleClick = async () => {
+  const handleSubscription = async () => {
     try {
-      const response = await axios.post("/api/create-checkout-session", {
-        // lookup_key: plan[0].lookup_id,
-        email: session?.user?.email,
-        name: session?.user?.name
-        // email : 'test@gmail.com'
-      });
-      console.log(response,"response")
+      const response = await axios.post<{ url: string }>(
+        "/api/create-checkout-session"
+      );
+      console.log("response", response);
       router.replace(response.data.url);
-    } catch (error : any) {
+    } catch (error: any) {
       console.error("Error creating checkout session:", error);
       setMessage("An error occurred. Please try again.");
-      toast.error(error?.response?.data?.error?.message)
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.error?.message || "Unknown error occurred"
+        );
+      } else {
+        toast.error("An error occurred. Please try again.");
+      }
     }
   };
+
+  const cancelSubscription = async () => {
+    try {
+      const res = await fetch("/api/cancel-subscription");
+      const { subscription } = await res.json();
+      console.log(subscription);
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchSubscriptionDetails = async () => {
+    try {
+      const res = await fetch("/api/subscription-details");
+      const subscription = await res.json();
+      console.log(subscription, "subscription");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(()=>{
+    fetchSubscriptionDetails()
+  }, [])
+
   return (
     <>
       <section
@@ -86,96 +125,85 @@ const PricingSection = () => {
               </p>
             </div>
             <div className="flex">
-              {/* <Card className="flex flex-col h-96 justify-evenly rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-2xl font-bold">Free</h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Get started with our basic features.
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="text-4xl font-bold">$0</div>
-                    <div className="text-gray-500 dark:text-gray-400">
-                      per month
+              {session?.user.stripeSubscriptionId ? (
+                <>
+                  <Card className="w-full max-w-md">
+                    <CardHeader>
+                      <CardTitle>Subscription Details</CardTitle>
+                      <CardDescription>
+                        Manage your account and subscription.
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent className="grid gap-6">
+                      <div className="grid gap-2">
+                        <Label htmlFor="plan">Current Plan</Label>
+                        <Input disabled id="plan" value="pro" />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="payment">Payment Method</Label>
+                        <Input
+                          disabled
+                          id="payment"
+                          value={`Visa ending with 2222`}
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="next-billing">Next Billing Date</Label>
+                        <Input
+                          disabled
+                          id="next-billing"
+                          value={`Free trial ends on `}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Button variant="outline" onClick={cancelSubscription}>
+                          Cancel Subscription
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </>
+              ) : (
+                <>
+                  <Card className="flex flex-col h-96 justify-evenly rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-2xl font-bold">Pro</h3>
+                        <p className="text-gray-500 dark:text-gray-400">
+                          Unlock advanced features and tools.
+                        </p>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-4xl font-bold">$1.99</div>
+                        <div className="text-gray-500 dark:text-gray-400">
+                          per month
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="mt-4 flex flex-col gap-2">
-                  <Button className="w-full" variant="outline">
-                    Get Started
-                  </Button>
-                  <Link
-                    className="text-sm font-medium text-gray-900 underline underline-offset-4 hover:text-gray-700 dark:text-gray-50 dark:hover:text-gray-300"
-                    href="#"
-                  >
-                    Manage Subscription
-                  </Link>
-                </div>
-              </Card> */}
-              <Card className="flex flex-col h-96 justify-evenly rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-2xl font-bold">Pro</h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Unlock advanced features and tools.
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="text-4xl font-bold">$1.99</div>
-                    <div className="text-gray-500 dark:text-gray-400">
-                      per month
+                    <div className="mt-4 flex flex-col gap-2">
+                      <Button
+                        className="w-full"
+                        variant="outline"
+                        onClick={handleSubscription}
+                      >
+                        Upgrade to Pro
+                      </Button>
+                      <Link
+                        className="text-sm font-medium text-gray-900 underline underline-offset-4  hover:text-gray-700 dark:text-gray-50 dark:hover:text-gray-300"
+                        href="#"
+                      >
+                        Manage Subscription
+                      </Link>
                     </div>
-                  </div>
-                </div>
-                <div className="mt-4 flex flex-col gap-2">
-                  <Button
-                    className="w-full"
-                    variant="outline"
-                    onClick={handleClick}
-                  >
-                    Upgrade to Pro
-                  </Button>
-                  <Link
-                    className="text-sm font-medium text-gray-900 underline underline-offset-4  hover:text-gray-700 dark:text-gray-50 dark:hover:text-gray-300"
-                    href="#"
-                  >
-                    Manage Subscription
-                  </Link>
-                </div>
-              </Card>
-              {/* <Card className="flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-2xl font-bold">Enterprise</h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Tailored solutions for large teams.
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="text-4xl font-bold">Contact Us</div>
-                    <div className="text-gray-500 dark:text-gray-400">
-                      Custom pricing available
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-4 flex flex-col gap-2">
-                  <Button className="w-full" variant="outline">
-                    Contact Sales
-                  </Button>
-                  <Link
-                    className="text-sm font-medium text-gray-900 underline underline-offset-4 hover:text-gray-700 dark:text-gray-50 dark:hover:text-gray-300"
-                    href="#"
-                  >
-                    Manage Subscription
-                  </Link>
-                </div>
-              </Card> */}
+                  </Card>
+                </>
+              )}
             </div>
           </div>
         </div>
       </section>
-      <WhyPremium/>
+      <WhyPremium />
       <section className="w-full flex justify-center items-center py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center">

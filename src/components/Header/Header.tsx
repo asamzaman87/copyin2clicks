@@ -15,11 +15,8 @@ import {
 
 const Header = () => {
   const { data: session, status } = useSession();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  console.log(session, "sessionsession");
 
   return (
     <>
@@ -51,13 +48,9 @@ const Header = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar>
-                    <AvatarImage
-                      src={
-                        session.user?.image || "https://github.com/shadcn.png"
-                      }
-                    />
+                    <AvatarImage src={session?.user?.image || ""} />
                     <AvatarFallback>
-                      {session.user?.name || "User"}
+                      {session?.user?.name || "User"}
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -65,9 +58,12 @@ const Header = () => {
                   <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem><Link href='/premium'>Subscription</Link></DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/premium">Subscription</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       signOut();
                     }}
                   >

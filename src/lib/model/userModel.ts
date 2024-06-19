@@ -4,7 +4,6 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
   email: {
@@ -22,20 +21,33 @@ const userSchema = new mongoose.Schema({
   },
   isActive: {
     type: Boolean,
+    default: false, 
   },
   stripeCustomerId: {
     type: String,
-    unique: true,
+  },
+  subscriptionStatus: {
+    type: String,
+  },
+  stripeSubscriptionId: {
+    type: String, 
   },
   emailVerified: {
     type: Date,
     default: Date.now,
   },
-
+  account :{
+    type: [mongoose.Schema.Types.Mixed],
+  },
+  session : {
+    type: [mongoose.Schema.Types.Mixed], 
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-export default mongoose.models.User || mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
+
+export default User;

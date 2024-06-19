@@ -9,7 +9,6 @@ export async function POST(request: NextRequest) {
     await dbConnect();
  
     const existingUser = await User.findOne({ email });
-    console.log(existingUser,'existingUser')
  
     if (existingUser) {
         return new NextResponse("Email is already in use", { status: 400 });

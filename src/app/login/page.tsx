@@ -17,11 +17,22 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const { data: session, status: sessionStatus } = useSession();
 
+  // useEffect(() => {
+  //   if (sessionStatus === "authenticated") {
+  //     router.replace("/");
+  //   }
+  // }, [sessionStatus, router]);
+
   useEffect(() => {
     if (sessionStatus === "authenticated") {
-      router.replace("/");
+      if (!session?.user?.isActive) {
+        return router.push("/");
+      }
+      return router.push("/");
     }
-  }, [sessionStatus, router]);
+  }, [sessionStatus, session]);
+
+
 
   const isValidEmail = (email: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -84,9 +95,7 @@ export default function Login() {
           <Button
             className="w-full justify-center gap-2 rounded-md border-gray-200 bg-white text-gray-900 shadow-sm transition-colors hover:bg-gray-100 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50 dark:hover:bg-gray-800"
             variant="outline"
-            onClick={(e) => {
-              signIn("google");
-            }}
+            onClick={() => signIn("google")}
           >
             <ChromeIcon className="h-5 w-5" />
             Login with Google

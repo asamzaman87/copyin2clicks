@@ -5,10 +5,13 @@ import GoogleProvider from "next-auth/providers/google";
 import User from "@/lib/model/userModel";
 import bcrypt from "bcryptjs";
 import stripe from "@/lib/stripe";
-
-// const baseURL = process.env.NEXT_PUBLIC_HOSTNAME + "login";
+import clientPromise from "@/lib/db";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import { Adapter } from "next-auth/adapters";
 
 export const options: NextAuthOptions = {
+  adapter: MongoDBAdapter(clientPromise) as Adapter,
+
   session: {
     strategy: "jwt",
   },
@@ -20,8 +23,7 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-
-        name: { label: "Email", type: "email", placeholder: "" },
+        email: { label: "Email", type: "email", placeholder: "" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
@@ -34,40 +36,99 @@ export const options: NextAuthOptions = {
               user.password
             );
             if (isPasswordCorrect) {
-              return user;
+              return {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                image: user.image,
+                stripeCustomerId: user.stripeCustomerId,
+                isActive: user.isActive,
+                subscriptionStatus: user.subscriptionStatus,
+                stripeSubscriptionId: user.stripeSubscriptionId,
+              };
             }
           }
+          return null;
         } catch (err: any) {
           throw new Error(err);
         }
       },
     }),
   ],
- 
 
-       
+  secret: process.env.NEXTAUTH_SECRET,
+
   pages: {
     // signIn: "/",
     // error: '/auth/error',
     // signOut: '/auth/signout'
   },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      return true;
-    },
- 
-  },
-  
-  events:{
-    createUser: async ({ user }) => {
-    const customer=  await stripe.customers.create({
+    async signIn({ user }) {
+      const customer = await stripe.customers.create({
         email: user.email!,
         name: user.name!,
-      })
+      });
+
       await User.findByIdAndUpdate(user.id, {
         stripeCustomerId: customer.id,
       });
-  
-    }
-  }
+
+      return true;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.image = user.image;
+        token.isActive = user.isActive;
+        token.stripeCustomerId = user.stripeCustomerId;
+        token.subscriptionStatus = user.subscriptionStatus;
+        token.stripeSubscriptionId = user.stripeSubscriptionId;
+        token.emailVerified = user.emailVerified;
+      } else {
+        await dbConnect();
+        const dbUser = await User.findById(token.id);
+        if (dbUser) {
+          token.name = dbUser.name;
+          token.email = dbUser.email;
+          token.image = dbUser.image;
+          token.isActive = dbUser.isActive;
+          token.stripeCustomerId = dbUser.stripeCustomerId;
+          token.subscriptionStatus = dbUser.subscriptionStatus;
+          token.stripeSubscriptionId = dbUser.stripeSubscriptionId;
+          token.emailVerified = dbUser.emailVerified;
+        }
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id as string;
+      session.user.name = token.name as string;
+      session.user.email = token.email as string;
+      session.user.image = token.image as string;
+      session.user.isActive = token.isActive as boolean;
+      session.user.stripeCustomerId = token.stripeCustomerId as string;
+      session.user.subscriptionStatus = token.subscriptionStatus as string;
+      session.user.stripeSubscriptionId = token.stripeSubscriptionId as string;
+      session.user.emailVerified = token.emailVerified as Date;
+
+      return session;
+    },
+  },
+
+  events: {
+    createUser: async ({ user }) => {
+      const customer = await stripe.customers.create({
+        email: user.email!,
+        name: user.name!,
+      });
+
+      await dbConnect();
+      await User.findByIdAndUpdate(user.id, {
+        stripeCustomerId: customer.id,
+      });
+    },
+  },
 };

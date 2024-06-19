@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import stripe from "@/lib/stripe";
 import dbConnect from "@/lib/dbConnect";
-// import User from '@/lib/model/userModel';
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/option";
 
@@ -12,11 +11,11 @@ import { options } from "../auth/[...nextauth]/option";
  */
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const { lookup_key, email, name } = await request.json();
 
     await dbConnect();
-    const user = await getServerSession(options);
-    if (!user?.user) {
+    const session = await getServerSession(options);
+    console.log('session123',session)
+    if (!session?.user) {
       return NextResponse.json(
         {
           error: {
@@ -27,13 +26,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         { status: 401 }
       );
     }
-    const customer = await stripe.customers.create({ email, name });
-    // const prices = await stripe.prices.list({
-    //     lookup_keys: [lookup_key],
-    //     expand: ['data.product'],
-    // });
-
-    const session = await stripe.checkout.sessions.create({
+    const checkoutsession = await stripe.checkout.sessions.create({
       billing_address_collection: "auto",
       line_items: [
         {
@@ -42,18 +35,23 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         },
       ],
       mode: "subscription",
-      customer: customer.id,
+      customer: session.user.stripeCustomerId,
       success_url: `http://localhost:3000/?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `http://localhost:3000?canceled=true`,
       subscription_data: {
+        metadata: {
+          payingUserId: session.user.id,
+        },
         trial_period_days: 7,
       },
     });
 
-    return new NextResponse(JSON.stringify({ url: session.url }), {
+    return new NextResponse(JSON.stringify({ url: checkoutsession.url }), {
       status: 200,
     });
   } catch (error: any) {
-    return new NextResponse(error.message, { status: 500 });
+    return new NextResponse(error.message, {
+      status: 500,
+    });
   }
 }

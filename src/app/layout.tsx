@@ -5,8 +5,6 @@ import { getServerSession } from "next-auth";
 import AuthProvider from "./context/authprovider";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
-import { ReactNode } from "react";
-import { Session } from "inspector";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
@@ -22,10 +20,6 @@ const rubik = Rubik({
   variable: "--font-rubik",
 });
 
-interface AuthProviderProps {
-  children: ReactNode;
-  session: Session | null;
-}
 
 export default async function RootLayout({
   children,
