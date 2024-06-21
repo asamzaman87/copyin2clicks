@@ -11,12 +11,11 @@ const HeroSection = () => {
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Boost Your Productivity with Our Extension
+                  Supercharge Your Copy-Paste Experience
                   </h1>
                   <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                    Our powerful extension seamlessly integrates with your
-                    browser, helping you streamline your workflow and accomplish
-                    more in less time.
+                  Elevate your productivity with our cutting-edge copy-paste extension. Effortlessly manage your clipboard, sync across devices, and more.
+
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -35,9 +34,9 @@ const HeroSection = () => {
                 </div>
               </div>
               <Image
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-                src="/hero.png"
-                alt="Hero"
+                className="h-full w-full rounded-xl"
+                src="/feature.jpg"
+                alt="extension"
                 height={500}
                 width={500}
               />

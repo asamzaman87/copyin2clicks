@@ -17,12 +17,6 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const { data: session, status: sessionStatus } = useSession();
 
-  // useEffect(() => {
-  //   if (sessionStatus === "authenticated") {
-  //     router.replace("/");
-  //   }
-  // }, [sessionStatus, router]);
-
   useEffect(() => {
     if (sessionStatus === "authenticated") {
       if (!session?.user?.isActive) {
@@ -30,9 +24,7 @@ export default function Login() {
       }
       return router.push("/");
     }
-  }, [sessionStatus, session]);
-
-
+  }, [sessionStatus, session, router]);
 
   const isValidEmail = (email: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -67,7 +59,7 @@ export default function Login() {
         toast.error("Invalid email or password");
         setError("Invalid email or password");
       } else {
-        toast.success('User LoggedIn')
+        toast.success("User LoggedIn");
         router.replace("/");
       }
     } catch (err) {
@@ -131,6 +123,11 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </div>
+            <div className="space-y-2">
+              {/* <Link href="/forgot-password" className="underline text-blue-500">
+                Forgot Password
+              </Link> */}
             </div>
             <Button className="w-full" type="submit" onClick={handleSubmit}>
               Login

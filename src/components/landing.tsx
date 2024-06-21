@@ -9,7 +9,6 @@ import Footer from "./Footer/Footer";
 export function Landing() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      {/* <Header /> */}
       <main className="flex-1 border-b">
         <HeroSection />
         <DemoSection />

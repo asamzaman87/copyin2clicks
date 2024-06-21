@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
   },
   isActive: {
     type: Boolean,
-    default: false, 
+    default: false,
   },
   stripeCustomerId: {
     type: String,
@@ -30,17 +30,23 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   stripeSubscriptionId: {
-    type: String, 
+    type: String,
   },
   emailVerified: {
     type: Date,
     default: Date.now,
   },
-  account :{
+  account: {
     type: [mongoose.Schema.Types.Mixed],
   },
-  session : {
-    type: [mongoose.Schema.Types.Mixed], 
+  session: {
+    type: [mongoose.Schema.Types.Mixed],
+  },
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
   },
   createdAt: {
     type: Date,
