@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import React from 'react'
+import Image from "next/image";
+import React from "react";
 
 const FeatureSection = () => {
   return (
@@ -18,7 +18,8 @@ const FeatureSection = () => {
                 Empower Your Clipboard Experience
               </h2>
               <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                ClickIn2Click offers a suite of powerful tools to help you manage your clipboard effortlessly and efficiently.
+                ClickIn2Clicks offers a suite of powerful tools to help you
+                manage your clipboard effortlessly and efficiently.
               </p>
             </div>
           </div>
@@ -27,19 +28,36 @@ const FeatureSection = () => {
               <ul className="grid gap-6">
                 <li>
                   <div className="grid gap-1">
-                    <h3 className="text-xl font-bold">Clipboard Management</h3>
+                    <h3 className="text-xl font-bold">Fast copying</h3>
                     <p className="text-gray-500 dark:text-gray-400">
-                      Efficiently organize and access your copied content with our advanced clipboard management features.
+                      Copy any text with a mere two clicks
                     </p>
                   </div>
                 </li>
                 <li>
                   <div className="grid gap-1">
-                    <h3 className="text-xl font-bold">
-                      Cross-Platform Sync
-                    </h3>
+                    <h3 className="text-xl font-bold">Smart storage</h3>
                     <p className="text-gray-500 dark:text-gray-400">
-                      Seamlessly sync your clipboard across devices, ensuring your content is always accessible when you need it.
+                      Automatically save what you copy and choose what you want
+                      saved across multiple copies
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <div className="grid gap-1">
+                    <h3 className="text-xl font-bold">Clipboard Management</h3>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Efficiently organize and access your copied content with
+                      our advanced clipboard management features.
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <div className="grid gap-1">
+                    <h3 className="text-xl font-bold">Cross-Platform Sync</h3>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Seamlessly sync your clipboard across devices, ensuring
+                      your content is always accessible when you need it.
                     </p>
                   </div>
                 </li>
@@ -49,7 +67,8 @@ const FeatureSection = () => {
                       Customizable Preferences
                     </h3>
                     <p className="text-gray-500 dark:text-gray-400">
-                      Tailor ClickIn2Click to suit your workflow with customizable settings and preferences.
+                      Tailor ClickIn2Click to suit your workflow with
+                      customizable settings and preferences.
                     </p>
                   </div>
                 </li>
@@ -66,7 +85,7 @@ const FeatureSection = () => {
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default FeatureSection
+export default FeatureSection;

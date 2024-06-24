@@ -21,13 +21,13 @@ export default function download() {
                 height={50}
               />
               <h1 className="text-3xl text-center font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                ClickIn2Click
+                ClickIn2Clicks
                 <br />
-                Your Ultimate Clipboard Manager
+                Click, Click, and You’re Done
               </h1>
               <p className="text-gray-600 text-center font-extralight">
-                Effortlessly manage your copied content across devices and
-                platforms.
+                Effortlessly copy and manage your copied content across devices
+                and platforms.
               </p>
             </div>
           </div>
@@ -35,13 +35,15 @@ export default function download() {
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Boost Your Productivity with Our Extension
+                  Copy as Copy Always Should Have Been
                 </h1>
                 <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                  ClickIn2Click revolutionizes how you manage your clipboard.
-                  With seamless integration across browsers and devices, you can
-                  effortlessly organize, access, and sync your copied content,
-                  boosting your productivity like never before.
+                  Imagine a world where copying large text is effortless,
+                  efficient, and precise. No more tedious highlighting, no more
+                  worrying about losing your copied text. This is the vision
+                  behind CopyIn2Clicks, a groundbreaking browser extension
+                  designed to transform the way you copy and store copied text
+                  online.
                 </p>
                 <Tabs />
               </div>

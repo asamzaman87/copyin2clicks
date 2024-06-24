@@ -17,17 +17,32 @@ import {
   AccordionContent,
   AccordionItem,
 } from "@/components/ui/accordion";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import WhyPremium from "./WhyPremium";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import Loader from "../ui/loader";
+import PremiumCheckout from "../premiumcheckout/PremiumCheckout";
 
-interface Subscription {
+interface subscriptionData {
+  subscriptions: any;
   id: string;
   trial_end: number; // Unix timestamp
   status: string;
+  current_period_end : number;
   default_payment_method?: {
     card?: {
       last4: string;
@@ -41,6 +56,7 @@ const PricingSection: React.FC = () => {
   const [sessionId, setSessionId] = useState<string>("");
   const { data: session } = useSession();
   const [isLoading, setisLoading] = useState(false);
+const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
 
   const parseQueryParams = () => {
     const query = new URLSearchParams(window.location.search);
@@ -55,7 +71,8 @@ const PricingSection: React.FC = () => {
     parseQueryParams();
   }, [sessionId]);
 
-  const handleSubscription = async () => {
+  const handleSubscription = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     setisLoading(true);
     try {
       const response = await axios.post<{ url: string }>(
@@ -96,7 +113,9 @@ const PricingSection: React.FC = () => {
     try {
       if (session?.user?.stripeSubscriptionId) {
         const res = await fetch("/api/subscription-details");
-        const subscription = await res.json();
+        const subscriptions = await res.json();
+        console.log(subscriptions, 'sddsgfgnh');
+        setSubscriptionData(subscriptions)
       } else {
         return;
       }
@@ -105,11 +124,21 @@ const PricingSection: React.FC = () => {
     } finally {
       setisLoading(false);
     }
-  }, [session]); // Add 'session' as a dependency if it's a variable from your component's state or props
+  }, [session, setSubscriptionData]); 
 
   useEffect(() => {
     fetchSubscriptionDetails();
   }, [fetchSubscriptionDetails]);
+
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+  
 
   return (
     <>
@@ -125,14 +154,13 @@ const PricingSection: React.FC = () => {
                 Pricing
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Flexible Subscription Options
+                CopyIn2Clicks Tiers
               </h2>
               <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Choose the plan that best suits your needs and budget. Upgrade
-                or downgrade anytime.
+                Here are the plans that the CopyIn2Clicks currently offers.
               </p>
             </div>
-            <div className="flex">
+            <div className="flex py-5">
               {session?.user.stripeSubscriptionId ? (
                 <>
                   <Card className="w-full max-w-md">
@@ -146,7 +174,7 @@ const PricingSection: React.FC = () => {
                     <CardContent className="grid gap-6">
                       <div className="grid gap-2">
                         <Label htmlFor="plan">Current Plan</Label>
-                        <Input disabled id="plan" value="pro" />
+                        <Input disabled id="plan" value={subscriptionData?.subscriptions.status} />
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="payment">Payment Method</Label>
@@ -161,33 +189,57 @@ const PricingSection: React.FC = () => {
                         <Input
                           disabled
                           id="next-billing"
-                          value={`Free trial ends on `}
+                          value={`Free trial ends on ${formatDate(subscriptionData?.subscriptions.current_period_end)}`}
                         />
                       </div>
                       <div className="flex flex-col gap-2">
-                        <Button variant="outline" onClick={cancelSubscription}>
+                        <AlertDialog>
+                          <AlertDialogTrigger className="border rounded-md py-2">
+                            Cancel Subscription
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Are you absolutely sure?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete your subscription and remove
+                                your data from our servers.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel onClick={cancelSubscription}>
+                                Cancel Subscription
+                              </AlertDialogCancel>
+                              <AlertDialogAction>Continue</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+
+                        {/* <Button variant="outline" onClick={cancelSubscription}>
                           Cancel Subscription
-                        </Button>
+                        </Button> */}
                       </div>
                     </CardContent>
                   </Card>
                 </>
               ) : (
-                <>
+                <div className="grid grid-cols-2 gap-10 max-w-4xl">
                   <Card className="flex flex-col h-auto justify-evenly rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
                     <div className="space-y-4">
                       <div>
-                        <h3 className="text-3xl font-bold text-center">Pro</h3>
+                        <h3 className="text-3xl font-bold text-center">Free</h3>
                         <p className="text-center text-gray-500 dark:text-gray-400">
                           Unlock advanced copy-paste features and tools.
                         </p>
                       </div>
                       <div className="space-y-1 text-center">
-                        <div className="text-4xl font-bold">$1.99</div>
+                        {/* <div className="text-4xl font-bold">$1.99</div>
                         <div className="text-gray-500 dark:text-gray-400">
                           per month
-                        </div>
-                        <div className="text-sm font-medium text-green-600 dark:text-green-400">
+                        </div> */}
+                        <div className="text-4xl font-bold text-green-600 dark:text-green-400">
                           7 days free trial
                         </div>
                       </div>
@@ -206,7 +258,7 @@ const PricingSection: React.FC = () => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            Unlimited clipboard history
+                            Copy any text in two clicks
                           </li>
                           <li className="flex items-center">
                             <svg
@@ -221,7 +273,7 @@ const PricingSection: React.FC = () => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            Customizable keyboard shortcuts
+                            Automatically save up to 5 recently copied items
                           </li>
                           <li className="flex items-center">
                             <svg
@@ -236,7 +288,8 @@ const PricingSection: React.FC = () => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            Secure storage
+                            Star copied items that you do not want to be
+                            automatically deleted
                           </li>
                           <li className="flex items-center">
                             <svg
@@ -251,22 +304,173 @@ const PricingSection: React.FC = () => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            Priority customer support
+                            Open copied text in new tab as well as ability to
+                            delete copied item
+                          </li>
+                          <li className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Limit of 500 words per copy
+                          </li>
+                          <li className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Does not maintain formatting upon copying, example:
+                            italics, bold, etc.{" "}
+                          </li>
+                          <li className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Customize copy controls including toggle to change
+                            copy key, store regular copied items, as well as for
+                            copying images
                           </li>
                         </ul>
                       </div>
                       <div className="mt-4 flex flex-col gap-2 items-center">
-                        <Button
-                          className="w-full"
-                          variant="outline"
-                          onClick={handleSubscription}
+                        <Link
+                          href="#premium"
+                          className="w-full text-blue-500 border py-2 rounded-md font-semibold "
                         >
-                          Upgrade to Pro
-                        </Button>
+                          Upgrade
+                        </Link>
                       </div>
                     </div>
                   </Card>
-                </>
+                  <Card className="flex flex-col h-auto justify-evenly rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-3xl font-bold text-center">Pro</h3>
+                        <p className="text-center text-gray-500 dark:text-gray-400">
+                          Unlock advanced copy-paste features and tools.
+                        </p>
+                      </div>
+                      <div className="space-y-1 text-center">
+                        <div className="text-4xl font-bold">$1.99</div>
+                        <div className="text-gray-500 dark:text-gray-400">
+                          per month
+                        </div>
+                      </div>
+                      <div className="mt-6 space-y-2">
+                        <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 dark:text-gray-300">
+                          <li className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Everything that free tier includes
+                          </li>
+                          <li className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Store up to 15 recently copied items
+                          </li>
+                          <li className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Ability to maintain formatting upon copying
+                          </li>
+                          <li className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            No words restriction when it comes to copying
+                          </li>
+                          <li className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Download copied items as any extension
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="mt-4 flex flex-col gap-2 items-center">
+                        <Link
+                          href="#premium"
+                          className="w-full text-blue-500 border py-2 rounded-md font-semibold "
+                        >
+                          Upgrade to Pro
+                        </Link>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
               )}
             </div>
           </div>
@@ -287,9 +491,10 @@ const PricingSection: React.FC = () => {
                   </AccordionTrigger>
                   <AccordionContent>
                     To start using ClickIn2Click, simply download and install
-                    the extension from the browser&apos;s web store. Once installed,
-                    ClickIn2Click will be ready to enhance your clipboard
-                    experience across all supported platforms.
+                    the extension from the browser&apos;s web store. Once
+                    installed, click on the extension and follow the listed
+                    instructions to get started. If you are having issues, then
+                    refer back to the demo in our download page.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
@@ -320,8 +525,8 @@ const PricingSection: React.FC = () => {
                   <AccordionContent>
                     You can upgrade to ClickIn2Click Premium by subscribing to
                     the premium plan within the extension&apos;s settings. Once
-                    subscribed, you&apos;ll gain access to exclusive features and
-                    benefits.
+                    subscribed, you&apos;ll gain access to exclusive features
+                    and benefits.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-5">
@@ -338,6 +543,9 @@ const PricingSection: React.FC = () => {
             </div>
           </div>
         </div>
+      </section>
+      <section id="premium" className="py-5">
+        <PremiumCheckout handleSubscription={handleSubscription} />
       </section>
     </>
   );

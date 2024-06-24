@@ -20,11 +20,12 @@ const Header = () => {
 
   return (
     <>
-      <header className="px-4 lg:px-6 h-14 flex items-center">
+      <header className="h-16 flex items-center justify-around gap-14  border-b border-gray-300">
         <Link className="flex items-center justify-center" href="/">
           <Image src="/icon.png" alt="Not-Found" width={50} height={50} />
+          <div>ClickIn2Clicks</div>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
+        <nav className="flex items-center  gap-4 sm:gap-6">
           <Link
             className="text-lg font-light hover:underline underline-offset-4"
             href="/download"
@@ -46,9 +47,9 @@ const Header = () => {
           {status === "authenticated" ? (
             <div>
               <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger className="outline-none">
                   <Avatar>
-                    <AvatarImage src={session?.user?.image || ""} />
+                    <AvatarImage src={session?.user?.image || "https://github.com/shadcn.png"} />
                     <AvatarFallback>
                       {session?.user?.name || "User"}
                     </AvatarFallback>
