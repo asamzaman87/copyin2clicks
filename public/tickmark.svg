@@ -1,0 +1,12 @@
+   <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="green"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>

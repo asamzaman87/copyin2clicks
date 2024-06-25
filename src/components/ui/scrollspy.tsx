@@ -162,19 +162,20 @@ const ScrollSpy = () => {
                 <h1 className="text-4xl font-bold mb-2">{section.label}</h1>
                 <p className="font-extralight">{section.content}</p>
                 {section.id === "how-to-use" && (
-                  <div className="flex justify-between items-center gap-5">
-                    <iframe
-                      width="100%"
-                      height="280px"
-                      src={section?.demoVideo}
-                      title="ClickIn2Click Demo"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                    ></iframe>
-                    {/* <p>Demo Video: <video src={section.demoVideo}></video></p> */}
+                  <div className="">
+                    <p>
+                      Demo Video{" "}
+                      <GmailLink
+                        target="_blank"
+                        href={`${section.demoVideo}`}
+                        className="text-blue-500"
+                      >
+                        {section.demoVideo}
+                      </GmailLink>
+                    </p>
                     <Image
-                      src='/extension-screenshot.png'
+                      className="mt-2"
+                      src="/extension-screenshot.png"
                       alt="Demo Image"
                       width={500}
                       height={500}

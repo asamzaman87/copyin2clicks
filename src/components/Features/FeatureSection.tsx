@@ -67,7 +67,7 @@ const FeatureSection = () => {
                       Customizable Preferences
                     </h3>
                     <p className="text-gray-500 dark:text-gray-400">
-                      Tailor ClickIn2Click to suit your workflow with
+                      Tailor ClickIn2Clicks to suit your workflow with
                       customizable settings and preferences.
                     </p>
                   </div>
@@ -75,7 +75,7 @@ const FeatureSection = () => {
               </ul>
             </div>
             <Image
-              alt="ClickIn2Click Features"
+              alt="ClickIn2Clicks Features"
               className="rounded-xl object-cover object-center"
               width={550}
               height={500}

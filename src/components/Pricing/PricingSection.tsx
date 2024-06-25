@@ -36,13 +36,14 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import Loader from "../ui/loader";
 import PremiumCheckout from "../premiumcheckout/PremiumCheckout";
+import Image from "next/image";
 
 interface subscriptionData {
   subscriptions: any;
   id: string;
   trial_end: number; // Unix timestamp
   status: string;
-  current_period_end : number;
+  current_period_end: number;
   default_payment_method?: {
     card?: {
       last4: string;
@@ -56,7 +57,7 @@ const PricingSection: React.FC = () => {
   const [sessionId, setSessionId] = useState<string>("");
   const { data: session } = useSession();
   const [isLoading, setisLoading] = useState(false);
-const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
+  const [subscriptionData, setSubscriptionData] = useState<subscriptionData>();
 
   const parseQueryParams = () => {
     const query = new URLSearchParams(window.location.search);
@@ -114,8 +115,8 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
       if (session?.user?.stripeSubscriptionId) {
         const res = await fetch("/api/subscription-details");
         const subscriptions = await res.json();
-        console.log(subscriptions, 'sddsgfgnh');
-        setSubscriptionData(subscriptions)
+        console.log(subscriptions, "sddsgfgnh");
+        setSubscriptionData(subscriptions);
       } else {
         return;
       }
@@ -124,7 +125,7 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
     } finally {
       setisLoading(false);
     }
-  }, [session, setSubscriptionData]); 
+  }, [session, setSubscriptionData]);
 
   useEffect(() => {
     fetchSubscriptionDetails();
@@ -138,7 +139,6 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
       day: "numeric",
     });
   };
-  
 
   return (
     <>
@@ -174,7 +174,11 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
                     <CardContent className="grid gap-6">
                       <div className="grid gap-2">
                         <Label htmlFor="plan">Current Plan</Label>
-                        <Input disabled id="plan" value={subscriptionData?.subscriptions.status} />
+                        <Input
+                          disabled
+                          id="plan"
+                          value={subscriptionData?.subscriptions.status}
+                        />
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="payment">Payment Method</Label>
@@ -189,7 +193,9 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
                         <Input
                           disabled
                           id="next-billing"
-                          value={`Free trial ends on ${formatDate(subscriptionData?.subscriptions.current_period_end)}`}
+                          value={`${formatDate(
+                            subscriptionData?.subscriptions.current_period_end
+                          )}`}
                         />
                       </div>
                       <div className="flex flex-col gap-2">
@@ -216,10 +222,6 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
-
-                        {/* <Button variant="outline" onClick={cancelSubscription}>
-                          Cancel Subscription
-                        </Button> */}
                       </div>
                     </CardContent>
                   </Card>
@@ -245,115 +247,72 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
                       </div>
                       <div className="mt-6 space-y-2">
                         <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 dark:text-gray-300">
-                          <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            Copy any text in two clicks
+                          <li className="flex items-start ">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span>Copy any text in two clicks</span>
                           </li>
-                          <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            Automatically save up to 5 recently copied items
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span>
+                              Automatically save up to 5 recently copied items
+                            </span>
                           </li>
-                          <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            Star copied items that you do not want to be
-                            automatically deleted
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span>
+                              Star copied items that you do not want to be
+                              automatically deleted
+                            </span>
                           </li>
-                          <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            Open copied text in new tab as well as ability to
-                            delete copied item
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span>
+                              Open copied text in new tab as well as ability to
+                              delete copied item
+                            </span>
                           </li>
-                          <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            Limit of 500 words per copy
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span>Limit of 500 words per copy</span>
                           </li>
-                          <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            Does not maintain formatting upon copying, example:
-                            italics, bold, etc.{" "}
-                          </li>
-                          <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            Customize copy controls including toggle to change
-                            copy key, store regular copied items, as well as for
-                            copying images
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span>
+                              {" "}
+                              Customize copy controls including toggle to change
+                              copy key, store regular copied items, as well as
+                              for copying images
+                            </span>
                           </li>
                         </ul>
                       </div>
@@ -362,12 +321,12 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
                           href="#premium"
                           className="w-full text-blue-500 border py-2 rounded-md font-semibold "
                         >
-                          Upgrade
+                          Current
                         </Link>
                       </div>
                     </div>
                   </Card>
-                  <Card className="flex flex-col h-auto justify-evenly rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
+                  <Card className="flex flex-col h-auto justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
                     <div className="space-y-4">
                       <div>
                         <h3 className="text-3xl font-bold text-center">Pro</h3>
@@ -384,83 +343,56 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
                       <div className="mt-6 space-y-2">
                         <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 dark:text-gray-300">
                           <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
                             Everything that free tier includes
                           </li>
                           <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
                             Store up to 15 recently copied items
                           </li>
                           <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
                             Ability to maintain formatting upon copying
                           </li>
-                          <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            No words restriction when it comes to copying
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span>No words restriction when it comes to copying</span>
                           </li>
                           <li className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-2 text-green-600 dark:text-green-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.707 15.293a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8 12.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
                             Download copied items as any extension
                           </li>
                         </ul>
                       </div>
-                      <div className="mt-4 flex flex-col gap-2 items-center">
+                     
+                    </div>
+
+                   <div className="mt-4 flex flex-col gap-2 items-center">
                         <Link
                           href="#premium"
                           className="w-full text-blue-500 border py-2 rounded-md font-semibold "
@@ -468,7 +400,6 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
                           Upgrade to Pro
                         </Link>
                       </div>
-                    </div>
                   </Card>
                 </div>
               )}
@@ -487,10 +418,10 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
               <Accordion type="single" collapsible>
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="font-semibold text-lg">
-                    How do I start using ClickIn2Click?
+                    How do I start using ClickIn2Clicks?
                   </AccordionTrigger>
                   <AccordionContent>
-                    To start using ClickIn2Click, simply download and install
+                    To start using ClickIn2Clicks, simply download and install
                     the extension from the browser&apos;s web store. Once
                     installed, click on the extension and follow the listed
                     instructions to get started. If you are having issues, then
@@ -499,31 +430,31 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
                 </AccordionItem>
                 <AccordionItem value="item-2">
                   <AccordionTrigger className="font-semibold text-lg">
-                    What platforms does ClickIn2Click support?
+                    What platforms does ClickIn2Clicks support?
                   </AccordionTrigger>
                   <AccordionContent>
-                    ClickIn2Click supports popular web browsers such as Chrome,
+                    ClickIn2Clicks supports popular web browsers such as Chrome,
                     Firefox, and Edge, across multiple operating systems
                     including Windows, macOS.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-3">
                   <AccordionTrigger className="font-semibold text-lg">
-                    Is ClickIn2Click free to use?
+                    Is ClickIn2Clicks free to use?
                   </AccordionTrigger>
                   <AccordionContent>
-                    Yes, ClickIn2Click offers a free version with essential
+                    Yes, ClickIn2Clicks offers a free version with essential
                     clipboard management features. However, for advanced
                     features and customization options, users can opt for
-                    ClickIn2Click Premium, available via subscription.
+                    ClickIn2Clicks Premium, available via subscription.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-4">
                   <AccordionTrigger className="font-semibold text-lg">
-                    How do I upgrade to ClickIn2Click Premium?
+                    How do I upgrade to ClickIn2Clicks Premium?
                   </AccordionTrigger>
                   <AccordionContent>
-                    You can upgrade to ClickIn2Click Premium by subscribing to
+                    You can upgrade to ClickIn2Clicks Premium by subscribing to
                     the premium plan within the extension&apos;s settings. Once
                     subscribed, you&apos;ll gain access to exclusive features
                     and benefits.
@@ -531,10 +462,10 @@ const [subscriptionData , setSubscriptionData] = useState<subscriptionData>();
                 </AccordionItem>
                 <AccordionItem value="item-5">
                   <AccordionTrigger className="font-semibold text-lg">
-                    Can I use ClickIn2Click on multiple devices?
+                    Can I use ClickIn2Clicks on multiple devices?
                   </AccordionTrigger>
                   <AccordionContent>
-                    Yes, ClickIn2Click syncs your clipboard across multiple
+                    Yes, ClickIn2Clicks syncs your clipboard across multiple
                     devices, allowing you to seamlessly access your copied
                     content from anywhere.
                   </AccordionContent>

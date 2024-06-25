@@ -49,7 +49,11 @@ const Header = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger className="outline-none">
                   <Avatar>
-                    <AvatarImage src={session?.user?.image || "https://github.com/shadcn.png"} />
+                    <AvatarImage
+                      src={
+                        session?.user?.image || "https://github.com/shadcn.png"
+                      }
+                    />
                     <AvatarFallback>
                       {session?.user?.name || "User"}
                     </AvatarFallback>
@@ -58,7 +62,9 @@ const Header = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <Link href="/profile">
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem>
                     <Link href="/premium">Subscription</Link>
                   </DropdownMenuItem>
