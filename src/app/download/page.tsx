@@ -48,13 +48,14 @@ export default function download() {
                 <Tabs />
               </div>
             </div>
-            <Image
+            <video  src="/demo.mov" controls autoPlay/>
+            {/* <Image
               className="h-full"
               src="/extension-screenshot.png"
               alt="Hero"
               height={500}
               width={500}
-            />
+            /> */}
           </div>
         </div>
       </section>

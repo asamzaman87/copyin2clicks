@@ -65,15 +65,19 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user }) {
-      const customer = await stripe.customers.create({
-        email: user.email!,
-        name: user.name!,
-      });
+      await dbConnect();
+      const existingUser = await User.findById(user.id);
+      
+      if (!existingUser.stripeCustomerId) {
+        const customer = await stripe.customers.create({
+          email: user.email!,
+          name: user.name!,
+        });
 
-      await User.findByIdAndUpdate(user.id, {
-        stripeCustomerId: customer.id,
-      });
-
+        await User.findByIdAndUpdate(user.id, {
+          stripeCustomerId: customer.id,
+        });
+      }
       return true;
     },
     async jwt({ token, user }) {
@@ -120,15 +124,19 @@ export const options: NextAuthOptions = {
 
   events: {
     createUser: async ({ user }) => {
-      const customer = await stripe.customers.create({
-        email: user.email!,
-        name: user.name!,
-      });
-
       await dbConnect();
-      await User.findByIdAndUpdate(user.id, {
-        stripeCustomerId: customer.id,
-      });
+      const existingUser = await User.findById(user.id);
+
+      if (!existingUser.stripeCustomerId) {
+        const customer = await stripe.customers.create({
+          email: user.email!,
+          name: user.name!,
+        });
+
+        await User.findByIdAndUpdate(user.id, {
+          stripeCustomerId: customer.id,
+        });
+      }
     },
   },
 };

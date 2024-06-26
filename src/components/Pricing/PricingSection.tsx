@@ -139,6 +139,7 @@ const PricingSection: React.FC = () => {
       day: "numeric",
     });
   };
+  {console.log(session,"hsdfojsdfsdji")}
 
   return (
     <>
@@ -161,7 +162,7 @@ const PricingSection: React.FC = () => {
               </p>
             </div>
             <div className="flex py-5">
-              {subscriptionData ? (
+              {session?.user?.stripeSubscriptionId ? (
                 <>
                   <Card className="w-full max-w-md">
                     <CardHeader>
@@ -233,17 +234,10 @@ const PricingSection: React.FC = () => {
                       <div>
                         <h3 className="text-3xl font-bold text-center">Free</h3>
                         <p className="text-center text-gray-500 dark:text-gray-400">
-                          Unlock advanced copy-paste features and tools.
+                          Free copy-paste features and tools.
                         </p>
                       </div>
                       <div className="space-y-1 text-center">
-                        {/* <div className="text-4xl font-bold">$1.99</div>
-                        <div className="text-gray-500 dark:text-gray-400">
-                          per month
-                        </div> */}
-                        <div className="text-4xl font-bold text-green-600 dark:text-green-400">
-                          7 days free trial
-                        </div>
                       </div>
                       <div className="mt-6 space-y-2">
                         <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 dark:text-gray-300">

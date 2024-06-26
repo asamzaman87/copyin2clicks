@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "../ui/card";
 import Image from "next/image";
+
 const WhyPremium = () => {
   return (
     <>
@@ -35,8 +36,66 @@ const WhyPremium = () => {
                       </h3>
                     </div>
                     <p className="text-left mt-2">
-                      Access and manage your clipboard history without
-                      limitations. Never lose track of copied content again.
+                      Store up to 15 recently copied items, ensuring you always have access to your clipboard history without limitations. Never lose track of copied content again.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-10 mb-16">
+                  <Image
+                    src="/format.png"
+                    alt="formatting"
+                    width={100}
+                    height={100}
+                  />
+                  <div>
+                    <div className="flex flex-row justify-start items-center gap-2">
+                      <span className="rounded uppercase px-1 py-0.5 text-sm font-bold bg-blue-400 text-white whitespace-nowrap">
+                        NEW!
+                      </span>
+                      <h3 className="text-3xl font-bold">
+                        Maintain Formatting
+                      </h3>
+                    </div>
+                    <p className="text-left mt-2">
+                      Preserve formatting such as italics, bold, and more upon copying. Perfect for ensuring your copied text looks exactly how you want it.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-10 mb-16">
+                  <Image
+                    src="/nolimit.png"
+                    alt="no limit"
+                    width={100}
+                    height={100}
+                  />
+                  <div>
+                    <div className="flex flex-row justify-start items-center gap-2">
+                      <span className="rounded uppercase px-1 py-0.5 text-sm font-bold bg-blue-400 text-white whitespace-nowrap">
+                        NEW!
+                      </span>
+                      <h3 className="text-3xl font-bold">No Word Limit</h3>
+                    </div>
+                    <p className="text-left mt-2">
+                      Copy without any word restrictions. Ideal for long-form content and extensive data copying needs.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-10 mb-16">
+                  <Image
+                    src="/download.png"
+                    alt="download"
+                    width={100}
+                    height={100}
+                  />
+                  <div>
+                    <div className="flex flex-row justify-start items-center gap-2">
+                      <span className="rounded uppercase px-1 py-0.5 text-sm font-bold bg-blue-400 text-white whitespace-nowrap">
+                        NEW!
+                      </span>
+                      <h3 className="text-3xl font-bold">Download Copied Items</h3>
+                    </div>
+                    <p className="text-left mt-2">
+                      Easily download your copied items in any extension you need. Keep a permanent record of important copied data.
                     </p>
                   </div>
                 </div>
