@@ -55,7 +55,7 @@ const PricingSection: React.FC = () => {
   const router = useRouter();
   const [success, setSuccess] = useState<boolean>(false);
   const [sessionId, setSessionId] = useState<string>("");
-  const { data: session } = useSession();
+  const { data: session , status} = useSession();
   const [isLoading, setisLoading] = useState(false);
   const [subscriptionData, setSubscriptionData] = useState<subscriptionData>();
 
@@ -110,8 +110,8 @@ const PricingSection: React.FC = () => {
   };
 
   const fetchSubscriptionDetails = useCallback(async () => {
-    setisLoading(true);
     try {
+      setisLoading(true);
       if (session?.user?.stripeSubscriptionId) {
         const res = await fetch("/api/subscription-details");
         const subscriptions = await res.json();
@@ -161,7 +161,7 @@ const PricingSection: React.FC = () => {
               </p>
             </div>
             <div className="flex py-5">
-              {session?.user.stripeSubscriptionId ? (
+              {subscriptionData ? (
                 <>
                   <Card className="w-full max-w-md">
                     <CardHeader>
@@ -177,7 +177,7 @@ const PricingSection: React.FC = () => {
                         <Input
                           disabled
                           id="plan"
-                          value={subscriptionData?.subscriptions.status}
+                          value={subscriptionData?.subscriptions.status ==='active'? 'Premium' : 'Free Trail'}
                         />
                       </div>
                       <div className="grid gap-2">

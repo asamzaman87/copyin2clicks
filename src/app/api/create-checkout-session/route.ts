@@ -36,8 +36,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ],
       mode: "subscription",
       customer: session.user.stripeCustomerId,
-      success_url: `http://localhost:3000/?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:3000?canceled=true`,
+      success_url: `https://extension-landing-page-zeta.vercel.app//?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://extension-landing-page-zeta.vercel.app/?canceled=true`,
       subscription_data: {
         metadata: {
           payingUserId: session.user.id,

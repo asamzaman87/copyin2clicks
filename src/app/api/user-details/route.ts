@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { options } from "../auth/[...nextauth]/option";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/lib/model/userModel";
+export const dynamic = 'force-dynamic' 
 
 export async function GET(req: NextRequest, res: NextResponse) {
   // Ensure the method is GET
@@ -15,7 +16,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   // Get the session from the request
   const session = await getServerSession(options);
-
   // Check if the user is authenticated
   if (!session || !session.user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
