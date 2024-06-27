@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, Element } from "react-scroll";
 import GmailLink from "next/link";
 import Image from "next/image";
+
 const sections = [
   {
     id: "what-is-clickin2clicks",
@@ -82,7 +83,6 @@ const sections = [
     content:
       "Using clickin2clicks is simple! After installing the extension, you can access its features directly from your browser's toolbar. Click on the clickin2clicks icon to open the clipboard manager and start copying and pasting with ease.",
     demoVideo: "https://www.youtube.com/embed/OLWV2ZPBpo8?si=r-faD97nEiqgSqjR",
-    // imageUrl: "/extension-screenshot.png",
   },
   {
     id: "support",
@@ -120,18 +120,17 @@ const ScrollSpy = () => {
 
   return (
     <>
-      <h1 className="text-left text-5xl font-extrabold px-32 py-12 md:py-24 lg:py-32 xl:py-12">
+      <h1 className="text-left text-3xl md:text-5xl font-extrabold px-4 md:px-8 lg:px-16 py-8 md:py-12 lg:py-16 xl:py-20">
         About ClickIn2Clicks
       </h1>
-      <section className="w-full flex justify-center items-center " id="hero">
-        <div className="container px-4 md:px-6 flex">
+      <section className="w-full flex justify-center items-start" id="hero">
+        <div className="container px-4 md:px-8 lg:px-16 flex flex-col lg:flex-row">
           <div
-            className="w-1/4 p-4 sticky top-0 h-full overflow-auto"
+            className="lg:w-1/4 p-4 lg:sticky lg:top-0 lg:h-full overflow-auto"
             id="index-container"
           >
-            <ul className="space-y-4 border p-5">
+            <ul className="space-y-4 border p-5 rounded-lg">
               <p className="font-semibold text-gray-500">INDEX</p>
-
               {sections.map((section) => (
                 <li key={section.id}>
                   <Link
@@ -151,7 +150,7 @@ const ScrollSpy = () => {
               ))}
             </ul>
           </div>
-          <div className="w-3/4 p-4 h-full overflow-auto" ref={contentRef}>
+          <div className="lg:w-3/4 p-4 lg:p-8 h-full overflow-auto" ref={contentRef}>
             {sections.map((section) => (
               <Element
                 name={section.id}
@@ -159,22 +158,24 @@ const ScrollSpy = () => {
                 id={section.id}
                 className="mb-10"
               >
-                <h1 className="text-4xl font-bold mb-2">{section.label}</h1>
-                <p className="font-extralight">{section.content}</p>
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">
+                  {section.label}
+                </h1>
+                <div className="font-extralight">{section.content}</div>
                 {section.id === "how-to-use" && (
                   <div className="">
                     <p>
-                      Demo Video{" "}
+                    Click here to watch a video of the extension in action {' '}
                       <GmailLink
+                       className="text-blue-500"
                         target="_blank"
                         href={`${section.demoVideo}`}
-                        className="text-blue-500"
                       >
                         {section.demoVideo}
                       </GmailLink>
                     </p>
                     <Image
-                      className="mt-2"
+                      className="mt-4"
                       src="/extension-screenshot.png"
                       alt="Demo Image"
                       width={500}
@@ -183,7 +184,7 @@ const ScrollSpy = () => {
                   </div>
                 )}
                 {section.id === "support" && (
-                  <p>
+                  <p className="mt-4">
                     Contact us at{" "}
                     <GmailLink
                       href={`mailto:${section.supportEmail}`}
