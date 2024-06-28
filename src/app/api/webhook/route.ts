@@ -4,8 +4,8 @@ import stripe from "@/lib/stripe";
 import User from "@/lib/model/userModel";
 import dbConnect from "@/lib/dbConnect";
 
-const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
-
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+console.log('webhookSecret', webhookSecret)
 export async function POST(req: NextRequest) {
   try {
     const buf = await req.text();
