@@ -26,7 +26,7 @@ const Header = () => {
       <header className="h-16 flex items-center justify-between px-4 sm:px-8 lg:px-14 border-b border-gray-300">
         <Link className="flex items-center justify-center" href="/">
           <Image src="/icon.png" alt="Not-Found" width={50} height={50} />
-          <div className="ml-2 text-lg sm:text-xl lg:text-2xl font-bold">ClickIn2Clicks</div>
+          <div className="ml-2 text-lg sm:text-xl lg:text-2xl font-bold">CopyIn2Clicks</div>
         </Link>
         <nav className="flex items-center gap-4 sm:gap-6">
           <div className="hidden md:flex gap-4">

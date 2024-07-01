@@ -8,14 +8,14 @@ export default function TermofService() {
         <section>
           <h2 className="text-2xl font-semibold">Introduction</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Welcome to ClickIn2Clicks, a copy-paste extension designed to enhance your productivity by managing your clipboard
+            Welcome to CopyIn2Clicks, a copy-paste extension designed to enhance your productivity by managing your clipboard
             history. By using our extension, you agree to these terms of service.
           </p>
         </section>
         <section>
           <h2 className="text-2xl font-semibold">User Responsibilities</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            As a user, you are responsible for all activities that occur through your use of the ClickIn2Clicks extension.
+            As a user, you are responsible for all activities that occur through your use of the CopyIn2Clicks extension.
             You should ensure the security of your data and report any unauthorized access or security breaches immediately.
           </p>
         </section>
@@ -31,21 +31,21 @@ export default function TermofService() {
           <h2 className="text-2xl font-semibold">Privacy Policy</h2>
           <p className="text-gray-600 dark:text-gray-400">
             We respect your privacy. Our Privacy Policy explains how we collect, use, disclose, and protect your information
-            when you use the ClickIn2Clicks extension. We will not share your information with third parties except as described
+            when you use the CopyIn2Clicks extension. We will not share your information with third parties except as described
             in our Privacy Policy.
           </p>
         </section>
         <section>
           <h2 className="text-2xl font-semibold">Intellectual Property</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            All intellectual property rights in the ClickIn2Clicks extension and its content are owned by us or our licensors.
+            All intellectual property rights in the CopyIn2Clicks extension and its content are owned by us or our licensors.
             These works are protected by copyright laws and treaties around the world. All rights are reserved.
           </p>
         </section>
         <section>
           <h2 className="text-2xl font-semibold">Termination</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            We may terminate or suspend your access to ClickIn2Clicks immediately, without prior notice or liability, for any reason,
+            We may terminate or suspend your access to CopyIn2Clicks immediately, without prior notice or liability, for any reason,
             including but not limited to a breach of these Terms.
           </p>
         </section>

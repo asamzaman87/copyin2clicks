@@ -11,10 +11,10 @@ const DemoSection = () => {
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                See ClickIn2Clicks in Action
+                See CopyIn2Clicks in Action
               </h2>
               <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Watch our demo video to see how ClickIn2Clicks can streamline
+                Watch our demo video to see how CopyIn2Clicks can streamline
                 your workflow and boost your productivity.
               </p>
             </div>
@@ -23,7 +23,7 @@ const DemoSection = () => {
                 width="100%"
                 height="100%"
                 src="https://www.youtube.com/embed/OLWV2ZPBpo8?si=r-faD97nEiqgSqjR"
-                title="ClickIn2Clicks Demo"
+                title="CopyIn2Clicks Demo"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen

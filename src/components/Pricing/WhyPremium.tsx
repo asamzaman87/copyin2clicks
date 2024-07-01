@@ -33,7 +33,7 @@ const WhyPremium = () => {
                           NEW!
                         </span>
                         <h3 className="text-2xl md:text-3xl font-bold">
-                          Unlimited Clipboard History
+                          Clipboard History
                         </h3>
                       </div>
                       <p className="text-left mt-2">
@@ -79,7 +79,7 @@ const WhyPremium = () => {
                           NEW!
                         </span>
                         <h3 className="text-2xl md:text-3xl font-bold">
-                          No Word Limit
+                        Copy large amount of texts without any restrictions!”
                         </h3>
                       </div>
                       <p className="text-left mt-2">

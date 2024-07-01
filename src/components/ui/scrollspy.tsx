@@ -6,8 +6,8 @@ import Image from "next/image";
 
 const sections = [
   {
-    id: "what-is-clickin2clicks",
-    label: "What is clickin2clicks?",
+    id: "what-is-CopyIn2Clicks",
+    label: "What is CopyIn2Clicks?",
     content:
       "CopyIn2Clicks is a powerful browser extension designed to enhance your clipboard experience. With CopyIn2Clicks, you can seamlessly copy and paste across different platforms and devices, saving you time and effort.",
   },
@@ -26,7 +26,7 @@ const sections = [
             and choose what you want saved across multiple copies.
           </li>
           <li>
-            <strong>Cross-platform compatibility : </strong> Use clickin2clicks
+            <strong>Cross-platform compatibility : </strong> Use CopyIn2Clicks
             on various browsers and operating systems.
           </li>
           <li>
@@ -34,7 +34,7 @@ const sections = [
             content across multiple devices.
           </li>
           <li>
-            <strong>Customizable settings : </strong> Tailor clickin2clicks to
+            <strong>Customizable settings : </strong> Tailor CopyIn2Clicks to
             suit your preferences with customizable options.
           </li>
         </ul>
@@ -81,14 +81,14 @@ const sections = [
     id: "how-to-use",
     label: "How to Use",
     content:
-      "Using clickin2clicks is simple! After installing the extension, you can access its features directly from your browser's toolbar. Click on the clickin2clicks icon to open the clipboard manager and start copying and pasting with ease.",
+      "Using CopyIn2Clicks is simple! After installing the extension, you can access its features directly from your browser's toolbar. Click on the CopyIn2Clicks icon to open the clipboard manager and start copying and pasting with ease.",
     demoVideo: "https://www.youtube.com/embed/OLWV2ZPBpo8?si=r-faD97nEiqgSqjR",
   },
   {
     id: "support",
     label: "Support",
     content:
-      "Need help with clickin2clicks? Our support team is here to assist you! Visit our Help Center for FAQs, troubleshooting guides, and contact information. We're dedicated to ensuring you have the best experience with our extension.",
+      "Need help with CopyIn2Clicks? Our support team is here to assist you! Visit our Help Center for FAQs, troubleshooting guides, and contact information. We're dedicated to ensuring you have the best experience with our extension.",
     supportEmail: "democraticdeveloper@gmail.com",
   },
 ];
@@ -121,7 +121,7 @@ const ScrollSpy = () => {
   return (
     <>
       <h1 className="text-left text-3xl md:text-5xl font-extrabold px-4 md:px-8 lg:px-16 py-8 md:py-12 lg:py-16 xl:py-20">
-        About ClickIn2Clicks
+        About CopyIn2Clicks
       </h1>
       <section className="w-full flex justify-center items-start" id="hero">
         <div className="container px-4 md:px-8 lg:px-16 flex flex-col lg:flex-row">
@@ -150,7 +150,10 @@ const ScrollSpy = () => {
               ))}
             </ul>
           </div>
-          <div className="lg:w-3/4 p-4 lg:p-8 h-full overflow-auto" ref={contentRef}>
+          <div
+            className="lg:w-3/4 p-4 lg:p-8 h-full overflow-auto"
+            ref={contentRef}
+          >
             {sections.map((section) => (
               <Element
                 name={section.id}
@@ -165,9 +168,9 @@ const ScrollSpy = () => {
                 {section.id === "how-to-use" && (
                   <div className="">
                     <p>
-                    Click here to watch a video of the extension in action {' '}
+                      Click here to watch a video of the extension in action{" "}
                       <GmailLink
-                       className="text-blue-500"
+                        className="text-blue-500"
                         target="_blank"
                         href={`${section.demoVideo}`}
                       >

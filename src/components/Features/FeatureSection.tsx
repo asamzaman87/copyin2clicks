@@ -18,7 +18,7 @@ const FeatureSection = () => {
                 Empower Your Clipboard Experience
               </h2>
               <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                ClickIn2Clicks offers a suite of powerful tools to help you
+              CopyIn2Clicks offers a suite of powerful tools to help you
                 manage your clipboard effortlessly and efficiently.
               </p>
             </div>
@@ -67,7 +67,7 @@ const FeatureSection = () => {
                       Customizable Preferences
                     </h3>
                     <p className="text-gray-500 dark:text-gray-400">
-                      Tailor ClickIn2Clicks to suit your workflow with
+                      Tailor CopyIn2Clicks to suit your workflow with
                       customizable settings and preferences.
                     </p>
                   </div>
@@ -75,7 +75,7 @@ const FeatureSection = () => {
               </ul>
             </div>
             <Image
-              alt="ClickIn2Clicks Features"
+              alt="CopyIn2Clicks Features"
               className="rounded-xl object-cover object-center"
               width={550}
               height={500}

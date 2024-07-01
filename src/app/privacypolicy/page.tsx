@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
         <section>
           <h2 className="text-2xl font-semibold">Introduction</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            At ClickIn2Clicks, we are committed to protecting your privacy. This Privacy Policy explains how we collect,
+            At CopyIn2Clicks, we are committed to protecting your privacy. This Privacy Policy explains how we collect,
             use, disclose, and safeguard your information when you use our copy-paste extension.
           </p>
         </section>

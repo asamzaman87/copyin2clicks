@@ -1,53 +1,195 @@
 "use client";
 
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import React from 'react';
-const user = {
-    image: 'https://via.placeholder.com/150',
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    subscription: {
-      plan: 'Premium',
-      status: 'Active',
-      nextBillingDate: '2024-07-01'
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/ui/loader";
+
+interface subscriptionData {
+  subscriptions: any;
+  id: string;
+  trial_end: number; // Unix timestamp
+  status: string;
+  current_period_end: number;
+  default_payment_method?: {
+    card?: {
+      last4: string;
+    };
+  };
+}
+
+export default function UserProfile() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const [isLoading, setisLoading] = useState(false);
+  const [subscriptionData, setSubscriptionData] = useState<subscriptionData>();
+
+  const fetchSubscriptionDetails = async () => {
+    try {
+      setisLoading(true);
+      if (session?.user?.stripeSubscriptionId) {
+        const res = await fetch("/api/subscription-details");
+        const subscriptions = await res.json();
+        console.log(subscriptions, "sddsgfgnh");
+        setSubscriptionData(subscriptions);
+      } else {
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setisLoading(false);
     }
   };
-  
-export default function UserProfile() {
-    const { data: session, status } = useSession();
+
+  useEffect(() => {
+    fetchSubscriptionDetails();
+  }, []);
+
+  const cancelSubscription = async () => {
+    setisLoading(true);
+    try {
+      const res = await fetch("/api/cancel-subscription");
+      const { subscription } = await res.json();
+      console.log(subscription);
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setisLoading(false);
+    }
+  };
+
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
-    <main className="flex flex-col min-h-screen items-center p-8  space-y-6">
-      <h1 className="text-3xl font-bold">User Profile</h1>
-      <div className="w-full max-w-2xl space-y-8">
-        <section className="flex flex-col items-center space-y-4">
+    <main className="flex flex-col min-h-screen items-center p-8 space-y-6 bg-gray-50 dark:bg-gray-900">
+      <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200">
+        User Profile
+      </h1>
+      <div className="w-full max-w-3xl space-y-12">
+        <section className="flex flex-col items-center bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 space-y-6">
           <Image
-            src={user?.image || '/icon.png'}
-            alt={'not-found'}
-            className="rounded-full object-cover"
-            width={100}
-            height={100}
+            src={session?.user?.image || "https://via.placeholder.com/150"}
+            alt={"not-found"}
+            className="rounded-full object-cover border-4 border-gray-200 dark:border-gray-700"
+            width={120}
+            height={120}
           />
           <div className="text-center">
-            <h2 className="text-2xl font-semibold">{session?.user?.name}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{session?.user?.email}</p>
-          </div>
-        </section>
-        <section className="w-full">
-          <h2 className="text-2xl font-semibold">Subscription Details</h2>
-          <div className="mt-4 border rounded-lg p-4">
+            <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">
+              {session?.user?.name}
+            </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              <strong>Plan:</strong> {`${session?.user?.subscriptionStatus ==='active'? 'Premium' : 'Free Trial'}`}
-            </p>
-            <p className="text-gray-600 dark:text-gray-400">
-              <strong>Status:</strong> {user.subscription.status}
-            </p>
-            <p className="text-gray-600 dark:text-gray-400">
-              <strong>Next Billing Date:</strong> {user.subscription.nextBillingDate}
+              {session?.user?.email}
             </p>
           </div>
         </section>
+        {isLoading ? (
+          <>
+            <Loader />
+          </>
+        ) : (
+          <section className="w-full bg-white flex justify-center items-center dark:bg-gray-800 shadow-lg rounded-lg p-8">
+            <div className="space-y-4 ">
+              <Card className="w-full max-w-md">
+                <CardHeader>
+                  <CardTitle>Subscription Details</CardTitle>
+                  <CardDescription>
+                    Manage your account and subscription.
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="grid gap-6">
+                  <div className="grid gap-2">
+                    <Label htmlFor="plan">Current Plan</Label>
+                    <Input
+                      disabled
+                      id="plan"
+                      value={
+                        subscriptionData?.subscriptions.status === "trailing"
+                          ? "Premium"
+                          : "Free"
+                      }
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="payment">Payment Method</Label>
+                    <Input
+                      disabled
+                      id="payment"
+                      value={`Visa ending with 2222`}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="next-billing">Next Billing Date</Label>
+                    <Input
+                      disabled
+                      id="next-billing"
+                      value={`${formatDate(
+                        subscriptionData?.subscriptions.current_period_end
+                      )}`}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <AlertDialog>
+                      <AlertDialogTrigger className="border rounded-md py-2">
+                        Cancel Subscription
+                      </AlertDialogTrigger>
+                      <AlertDialogContent className="bg-white text-black" >
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you absolutely sure?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete your subscription and remove your data from
+                            our servers.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel onClick={cancelSubscription}>
+                            Cancel Subscription
+                          </AlertDialogCancel>
+                          <AlertDialogAction>Close</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );

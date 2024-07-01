@@ -21,7 +21,7 @@ export default function Download() {
                 height={80}
               />
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter">
-                ClickIn2Clicks
+                CopyIn2Clicks
                 <br />
                 Click, Click, and You’re Done
               </h1>
@@ -49,7 +49,12 @@ export default function Download() {
               </div>
             </div>
             <div className="flex justify-center items-center">
-              <video className="w-full max-w-[500px] xl:max-w-[600px]" src="/demo.mov" controls autoPlay />
+              <video
+                className="w-full max-w-[500px] xl:max-w-[600px]"
+                src="/demo.mov"
+                controls
+                autoPlay
+              />
             </div>
           </div>
         </div>
