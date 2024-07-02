@@ -168,13 +168,12 @@ const ScrollSpy = () => {
                 {section.id === "how-to-use" && (
                   <div className="">
                     <p>
-                      Click here to watch a video of the extension in action{" "}
                       <GmailLink
                         className="text-blue-500"
                         target="_blank"
                         href={`${section.demoVideo}`}
                       >
-                        {section.demoVideo}
+                        Click here to watch a video of the extension in action.
                       </GmailLink>
                     </p>
                     <Image
