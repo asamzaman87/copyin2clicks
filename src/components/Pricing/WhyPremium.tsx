@@ -12,7 +12,7 @@ const WhyPremium = () => {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center text-center">
             <div className="w-full max-w-4xl">
-              <Card className="flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg pt-14 px-4 md:px-14 pb-28">
+              <Card className="flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800  dark:hover:shadow-lg pt-14 px-4 md:px-14 pb-28">
                 <div className="mt-7">
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl lg:text-5xl">
                     Why Upgrade to Premium?

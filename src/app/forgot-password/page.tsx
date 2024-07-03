@@ -35,7 +35,7 @@ export default function ForgotPassword() {
   return (
     <>
       {isLoading && <Loader />}
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-950">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100 ">
         <div className="mx-auto w-full max-w-md ">
           <Card className="">
             <CardHeader className="space-y-1">

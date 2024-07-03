@@ -88,7 +88,7 @@ const PricingSection: React.FC = () => {
                 </div>
                 <div className="flex py-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10 max-w-4xl mx-auto">
-                    <Card className="flex flex-col h-auto justify-evenly rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
+                    <Card className="flex flex-col h-auto justify-evenly rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800  dark:hover:shadow-lg">
                       <div className="space-y-4">
                         <div>
                           <h3 className="text-2xl sm:text-3xl font-bold text-center">
@@ -182,7 +182,7 @@ const PricingSection: React.FC = () => {
                         </div>
                       </div>
                     </Card>
-                    <Card className="flex flex-col h-auto justify-between rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:hover:shadow-lg">
+                    <Card className="flex flex-col h-auto justify-between rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800  dark:hover:shadow-lg">
                       <div className="space-y-4">
                         <div>
                           <h3 className="text-2xl sm:text-3xl font-bold text-center">

@@ -76,7 +76,7 @@ export default function Login() {
   return (
     <>
       {isLoading && <Loader />}
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-950">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100 ">
         <div className="mx-auto w-full max-w-md space-y-6 rounded-lg bg-white p-6 shadow-lg dark:bg-gray-900">
           <div className="space-y-2 text-center">
             <h1 className="text-3xl font-bold">Welcome Back</h1>
@@ -85,7 +85,7 @@ export default function Login() {
             </p>
           </div>
           <Button
-            className="w-full justify-center gap-2 rounded-md border-gray-200 bg-white text-gray-900 shadow-sm transition-colors hover:bg-gray-100 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50 dark:hover:bg-gray-800"
+            className="w-full justify-center gap-2 rounded-md border-gray-200 bg-white text-gray-900 shadow-sm transition-colors hover:bg-gray-100 dark:border-gray-800  dark:text-gray-50 dark:hover:bg-gray-800"
             variant="outline"
             onClick={() => signIn("google")}
           >
