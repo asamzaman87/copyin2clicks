@@ -99,7 +99,7 @@ const PricingSection: React.FC = () => {
                           </p>
                         </div>
                         <div className="mt-6 space-y-2">
-                          <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 dark:text-gray-300">
+                          <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 ">
                             <li className="flex items-start">
                               <Image
                                 src="/tickmark.svg"
@@ -201,7 +201,7 @@ const PricingSection: React.FC = () => {
                           </div>
                         </div>
                         <div className="mt-6 space-y-2">
-                          <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 dark:text-gray-300">
+                          <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 ">
                             <li className="flex items-center">
                               <Image
                                 src="/tickmark.svg"

@@ -85,7 +85,7 @@ export default function Login() {
             </p>
           </div>
           <Button
-            className="w-full justify-center gap-2 rounded-md border-gray-200 bg-white text-gray-900 shadow-sm transition-colors hover:bg-gray-100 dark:border-gray-800  dark:text-gray-50 dark:hover:bg-gray-800"
+            className="w-full justify-center gap-2 rounded-md border-gray-200 bg-white text-gray-900 shadow-sm transition-colors  dark:border-gray-800  "
             variant="outline"
             onClick={() => signIn("google")}
           >
@@ -121,6 +121,7 @@ export default function Login() {
                 required
                 type="password"
                 value={password}
+                placeholder="password"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
@@ -129,7 +130,7 @@ export default function Login() {
                 Forgot Password
               </Link> */}
             </div>
-            <Button className="w-full" type="submit" onClick={handleSubmit}>
+            <Button className="w-full" variant='outline' type="submit" onClick={handleSubmit}>
               Login
             </Button>
           </div>

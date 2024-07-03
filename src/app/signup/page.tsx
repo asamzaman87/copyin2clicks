@@ -133,12 +133,13 @@ export default function Signup() {
                       id="password"
                       type="password"
                       value={password}
+                      placeholder="password"
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between items-center gap-2">
-                  <Button className="" onClick={handleSubmit}>
+                  <Button className="" variant={"outline"} onClick={handleSubmit}>
                     Sign Up
                   </Button>
                   <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
