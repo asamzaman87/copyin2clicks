@@ -77,7 +77,7 @@ export default function Login() {
     <>
       {isLoading && <Loader />}
       <div className="flex min-h-screen items-center justify-center bg-gray-100 ">
-        <div className="mx-auto w-full max-w-md space-y-6 rounded-lg bg-white p-6 shadow-lg dark:bg-gray-900">
+        <div className="mx-auto w-full max-w-md space-y-6 rounded-lg bg-white p-6 shadow-lg ">
           <div className="space-y-2 text-center">
             <h1 className="text-3xl font-bold">Welcome Back</h1>
             <p className="text-gray-500 dark:text-gray-400">
@@ -97,7 +97,7 @@ export default function Login() {
               <span className="w-full border-t border-gray-300 dark:border-gray-700" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500 dark:bg-gray-900 dark:text-gray-400">
+              <span className="bg-white px-2 text-gray-500  dark:text-gray-400">
                 Or
               </span>
             </div>

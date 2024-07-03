@@ -28,7 +28,7 @@ const DemoSection = () => {
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
               ></iframe>
-              <span className="rounded-md bg-gray-100 dark:bg-gray-800" />
+              <span className="rounded-md bg-gray-100 " />
             </div>
           </div>
         </div>

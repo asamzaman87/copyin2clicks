@@ -92,12 +92,12 @@ export default function UserProfile() {
   return (
     <>
       {isLoading && <Loader />}
-      <main className="flex flex-col min-h-screen items-center p-8 space-y-6 bg-gray-50 dark:bg-gray-900">
+      <main className="flex flex-col min-h-screen items-center p-8 space-y-6 bg-gray-50 ">
         <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200">
           User Profile
         </h1>
         <div className="w-full max-w-3xl space-y-12">
-          <section className="flex flex-col items-center bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 space-y-6">
+          <section className="flex flex-col items-center bg-white  shadow-lg rounded-lg p-8 space-y-6">
             <Image
               src={session?.user?.image || "https://via.placeholder.com/150"}
               alt={"not-found"}
@@ -115,7 +115,7 @@ export default function UserProfile() {
             </div>
           </section>
           {subscriptionData && (
-            <section className="w-full bg-white flex justify-center items-center dark:bg-gray-800 shadow-lg rounded-lg p-8">
+            <section className="w-full bg-white flex justify-center items-center  shadow-lg rounded-lg p-8">
               <div className="space-y-4 ">
                 <Card className="w-full max-w-md">
                   <CardHeader>
