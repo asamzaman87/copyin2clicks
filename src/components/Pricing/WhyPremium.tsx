@@ -79,12 +79,13 @@ const WhyPremium = () => {
                           NEW!
                         </span>
                         <h3 className="text-2xl md:text-3xl font-bold">
-                        Copy large amount of texts without any restrictions!”
+                          Copy upto 5000 words
                         </h3>
                       </div>
                       <p className="text-left mt-2">
-                        Copy without any word restrictions. Ideal for long-form
-                        content and extensive data copying needs.
+                        Copy up to 5000 words without any word restrictions.
+                        Ideal for long-form content and extensive data copying
+                        needs.
                       </p>
                     </div>
                   </div>
