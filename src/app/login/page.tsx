@@ -31,7 +31,7 @@ export default function Login() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError("");
     if (!email) {
@@ -49,7 +49,6 @@ export default function Login() {
       toast.error("Password is required");
       return;
     }
-
 
     if (!password) {
       setError("Password is invalid");
@@ -80,6 +79,7 @@ export default function Login() {
     }
   };
 
+
   if (sessionStatus === "loading") {
     return <Loader />;
   }
@@ -97,7 +97,10 @@ export default function Login() {
           <Button
             className="w-full justify-center gap-2 rounded-md border-gray-200 bg-white text-gray-900 shadow-sm transition-colors  dark:border-gray-800  "
             variant="outline"
-            onClick={() => signIn("google")}
+            onClick={(e) => {
+              e.preventDefault()
+              signIn('google')
+            }}
           >
             <ChromeIcon className="h-5 w-5" />
             Login with Google
@@ -140,12 +143,17 @@ export default function Login() {
                 Forgot Password
               </Link>
             </div>
-            <Button className="w-full" variant='outline' type="submit" onClick={handleSubmit}>
+            <Button
+              className="w-full"
+              variant="outline"
+              type="submit"
+              onClick={handleSubmit}
+            >
               Login
             </Button>
           </div>
           <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Don&apos;t have an account?{' '}
+            Don&apos;t have an account?{" "}
             <Link className="font-medium underline" href="/signup">
               Register
             </Link>

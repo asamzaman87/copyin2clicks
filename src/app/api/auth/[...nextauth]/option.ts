@@ -19,6 +19,7 @@ export const options: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      allowDangerousEmailAccountLinking : true
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -29,13 +30,24 @@ export const options: NextAuthOptions = {
       async authorize(credentials: any) {
         await dbConnect();
         try {
-          const user = await User.findOne({ email: credentials.email });
+          let user = await User.findOne({ email: credentials.email });
           if (user) {
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
               user.password
             );
             if (isPasswordCorrect) {
+              // Create Stripe customer if stripeCustomerId is not available
+              if (!user.stripeCustomerId) {
+                const customer = await stripe.customers.create({
+                  email: user.email,
+                  name: user.name,
+                });
+
+                user.stripeCustomerId = customer.id;
+                await user.save();
+              }
+
               return {
                 id: user._id,
                 email: user.email,
@@ -45,6 +57,7 @@ export const options: NextAuthOptions = {
                 isActive: user.isActive,
                 subscriptionStatus: user.subscriptionStatus,
                 stripeSubscriptionId: user.stripeSubscriptionId,
+                emailVerified: user.emailVerified,
               };
             }
           }
@@ -64,21 +77,21 @@ export const options: NextAuthOptions = {
     // signOut : ''
   },
   callbacks: {
-    async signIn({ user }) {
-      await dbConnect();
-      const existingUser = await User.findById(user.id);
+    // async signIn({ user }) {
+    //   await dbConnect();
+    //   const existingUser = await User.findById(user.id);
       
-      if (!existingUser.stripeCustomerId) {
-        const customer = await stripe.customers.create({
-          email: user.email!,
-          name: user.name!,
-        });
-        await User.findByIdAndUpdate(user.id, {
-          stripeCustomerId: customer.id,
-        });
-      }
-      return true;
-    },
+    //   if (!existingUser.stripeCustomerId) {
+    //     const customer = await stripe.customers.create({
+    //       email: user.email!,
+    //       name: user.name!,
+    //     });
+    //     await User.findByIdAndUpdate(user.id, {
+    //       stripeCustomerId: customer.id,
+    //     });
+    //   }
+    //   return true;
+    // },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
