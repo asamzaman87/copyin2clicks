@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
  
-const allowedOrigins = ['http://localhost:3000', 'moz-extension://1d0326d7-b951-4e15-8af1-7fef37caf7e1']
+const allowedOrigins = ['https://extension-landing-page-zeta.vercel.app', 'moz-extension://1d0326d7-b951-4e15-8af1-7fef37caf7e1']
  
 const corsOptions = {
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',

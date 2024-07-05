@@ -51,7 +51,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       subject: "Password Reset",
       html: `<p>You are receiving this because you (or someone else) have requested the reset of the password for your account.</p>
       <p>Please click on the following link, or paste this into your browser to complete the process:</p>
-      <p><a href="http://localhost:3000/forgot-password/${resetToken}">Reset Password</a></p>
+      <p><a href="https://extension-landing-page-zeta.vercel.app/forgot-password/${resetToken}">Reset Password</a></p>
       <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>`,
     });
 
