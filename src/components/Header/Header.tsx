@@ -26,7 +26,9 @@ const Header = () => {
       <header className="h-16 flex items-center justify-between px-4 sm:px-8 lg:px-14 border-b border-gray-300">
         <Link className="flex items-center justify-center" href="/">
           <Image src="/icon.png" alt="Not-Found" width={50} height={50} />
-          <div className="ml-2 text-lg sm:text-xl lg:text-2xl font-bold">CopyIn2Clicks</div>
+          <div className="ml-2 text-lg sm:text-xl lg:text-2xl font-bold">
+            CopyIn2Clicks
+          </div>
         </Link>
         <nav className="flex items-center gap-4 sm:gap-6">
           <div className="hidden md:flex gap-4">
@@ -48,6 +50,12 @@ const Header = () => {
             >
               Premium
             </Link>
+            <Link
+              className="text-lg font-light hover:underline underline-offset-4"
+              href="/faq"
+            >
+              Faq
+            </Link>
             {status === "authenticated" ? (
               <div>
                 <DropdownMenu>
@@ -55,7 +63,8 @@ const Header = () => {
                     <Avatar>
                       <AvatarImage
                         src={
-                          session?.user?.image || "https://github.com/shadcn.png"
+                          session?.user?.image ||
+                          "https://github.com/shadcn.png"
                         }
                       />
                       <AvatarFallback>
@@ -66,9 +75,6 @@ const Header = () => {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link href="/profile">
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
-                    </Link>
                     <DropdownMenuItem>
                       <Link href="/premium">Subscription</Link>
                     </DropdownMenuItem>
@@ -92,10 +98,7 @@ const Header = () => {
               </Link>
             )}
           </div>
-          <button
-            className="md:hidden flex items-center"
-            onClick={toggleMenu}
-          >
+          <button className="md:hidden flex items-center" onClick={toggleMenu}>
             <svg
               className="w-6 h-6"
               fill="none"
@@ -135,22 +138,16 @@ const Header = () => {
             >
               Premium
             </Link>
+
+            <Link
+              className="block px-4 py-2 text-lg font-light hover:bg-gray-200"
+              href="/faq"
+              onClick={toggleMenu}
+            >
+              Faq
+            </Link>
             {status === "authenticated" ? (
               <>
-                <Link
-                  className="block px-4 py-2 text-lg font-light hover:bg-gray-200"
-                  href="/profile"
-                  onClick={toggleMenu}
-                >
-                  Profile
-                </Link>
-                <Link
-                  className="block px-4 py-2 text-lg font-light hover:bg-gray-200"
-                  href="/premium"
-                  onClick={toggleMenu}
-                >
-                  Subscription
-                </Link>
                 <button
                   className="block w-full text-left px-4 py-2 text-lg font-light hover:bg-gray-200"
                   onClick={(e) => {

@@ -31,19 +31,29 @@ export default function Login() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setError("");
-
+    if (!email) {
+      setError("Email is required");
+      toast.error("Email is required");
+      return;
+    }
     if (!isValidEmail(email)) {
       setError("Email is invalid");
-      setIsLoading(false);
+      toast.error("Email is invalid");
+      return;
+    }
+    if (!password) {
+      setError("Password is required");
+      toast.error("Password is required");
       return;
     }
 
+
     if (!password) {
       setError("Password is invalid");
-      setIsLoading(false);
+      toast.error("Password is invalid");
       return;
     }
 
@@ -59,7 +69,7 @@ export default function Login() {
         toast.error("Invalid email or password");
         setError("Invalid email or password");
       } else {
-        toast.success("User LoggedIn");
+        toast.success("User Logged In Successfully");
         router.replace("/");
       }
     } catch (err) {
@@ -126,16 +136,16 @@ export default function Login() {
               />
             </div>
             <div className="space-y-2">
-              {/* <Link href="/forgot-password" className="underline text-blue-500">
+              <Link href="/forgot-password" className="underline text-blue-500">
                 Forgot Password
-              </Link> */}
+              </Link>
             </div>
             <Button className="w-full" variant='outline' type="submit" onClick={handleSubmit}>
               Login
             </Button>
           </div>
           <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Don&apos;t have an account?
+            Don&apos;t have an account?{' '}
             <Link className="font-medium underline" href="/signup">
               Register
             </Link>

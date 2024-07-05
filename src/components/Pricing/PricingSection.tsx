@@ -4,21 +4,47 @@ import Link from "next/link";
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import {
-  Accordion,
-  AccordionTrigger,
-  AccordionContent,
-  AccordionItem,
-} from "@/components/ui/accordion";
+
 import WhyPremium from "./WhyPremium";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import Loader from "../ui/loader";
 import PremiumCheckout from "../premiumcheckout/PremiumCheckout";
 import Image from "next/image";
-import { Card } from "../ui/card";
+// import { Card } from "../ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-
+interface subscriptionData {
+  subscriptions: any;
+  id: string;
+  trial_end: number; // Unix timestamp
+  status: string;
+  current_period_end: number;
+  default_payment_method?: {
+    card?: {
+      last4: string;
+    };
+  };
+}
 
 const PricingSection: React.FC = () => {
   const router = useRouter();
@@ -26,6 +52,9 @@ const PricingSection: React.FC = () => {
   const [sessionId, setSessionId] = useState<string>("");
   const { data: session, status } = useSession();
   const [isLoading, setisLoading] = useState(false);
+
+  const [subscriptionData, setSubscriptionData] = useState<subscriptionData>();
+  console.log(subscriptionData, "subscriptionData234567");
 
   const parseQueryParams = () => {
     const query = new URLSearchParams(window.location.search);
@@ -39,6 +68,26 @@ const PricingSection: React.FC = () => {
   useEffect(() => {
     parseQueryParams();
   }, [sessionId]);
+
+  const fetchSubscriptionDetails = async () => {
+    try {
+      setisLoading(true);
+      const res = await fetch("/api/subscription-details");
+      const subscriptions = await res.json();
+      console.log(subscriptions, "sddsgfgnh");
+      setSubscriptionData(subscriptions);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setisLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchSubscriptionDetails();
+    }
+  }, [status]);
 
   const handleSubscription = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -63,12 +112,107 @@ const PricingSection: React.FC = () => {
     }
   };
 
-  if(isLoading || status === 'loading')  return <Loader />
+  const cancelSubscription = async () => {
+    setisLoading(true);
+    try {
+      const res = await fetch("/api/cancel-subscription");
+      const { subscription } = await res.json();
+      console.log(subscription);
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setisLoading(false);
+    }
+  };
+
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  if (isLoading || status === "loading") return <Loader />;
 
   return (
     <>
+      {subscriptionData && (
+        <section className="w-full bg-white flex justify-center items-center  shadow-lg rounded-lg p-8">
+          <div className="space-y-4 ">
+            <Card className="w-full max-w-md">
+              <CardHeader>
+                <CardTitle>Subscription Details</CardTitle>
+                <CardDescription>
+                  Manage your account and subscription.
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent className="grid gap-6">
+                <div className="grid gap-2">
+                  <Label htmlFor="plan">Current Plan</Label>
+                  <Input
+                    disabled
+                    id="plan"
+                    value={
+                      subscriptionData?.subscriptions.status === "trialing"
+                        ? "Free Trial"
+                        : "Premium"
+                    }
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="payment">Payment Method</Label>
+                  <Input
+                    disabled
+                    id="payment"
+                    value={`Visa ending with 2222`}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="next-billing">Next Billing Date</Label>
+                  <Input
+                    disabled
+                    id="next-billing"
+                    value={`${formatDate(
+                      subscriptionData?.subscriptions.current_period_end
+                    )}`}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <AlertDialog>
+                    <AlertDialogTrigger className="border rounded-md py-2">
+                      Cancel Subscription
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-white text-black">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your subscription and remove your data from our
+                          servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel onClick={cancelSubscription}>
+                          Cancel Subscription
+                        </AlertDialogCancel>
+                        <AlertDialogAction>Close</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
       <>
-        {(!session?.user?.stripeSubscriptionId && status !== 'authenticated') &&  (
+        {!session?.user?.stripeSubscriptionId && status == "authenticated" && (
           <section
             className="w-full flex justify-center items-center py-12  md:py-20 lg:py-24"
             id="pricing"
@@ -278,74 +422,8 @@ const PricingSection: React.FC = () => {
       </>
 
       <WhyPremium />
-      <section className="w-full flex justify-center items-center py-12 md:py-24 lg:py-32">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center">
-            <div className="w-full max-w-4xl space-y-4">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center">
-                Frequently Asked Questions
-              </h2>
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-1">
-                  <AccordionTrigger className="font-semibold text-lg">
-                    How do I start using CopyIn2Clicks?
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    To start using CopyIn2Clicks, simply download and install
-                    the extension from the browser&apos;s web store. Once
-                    installed, click on the extension and follow the listed
-                    instructions to get started. If you are having issues, then
-                    refer back to the demo in our download page.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger className="font-semibold text-lg">
-                    What platforms does CopyIn2Clicks support?
-                  </AccordionTrigger>
-                  <AccordionContent>
-                  CopyIn2Clicks supports popular web browsers such as Chrome,
-                    Firefox, and Edge, across multiple operating systems
-                    including Windows and macOS.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger className="font-semibold text-lg">
-                    Is CopyIn2Clicks free to use?
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    Yes, CopyIn2Clicks offers a free version with essential
-                    clipboard management features. However, for advanced
-                    features and customization options, users can opt for
-                    CopyIn2Clicks Premium, available via subscription.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-4">
-                  <AccordionTrigger className="font-semibold text-lg">
-                    How do I upgrade to CopyIn2Clicks Premium?
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    You can upgrade to CopyIn2Clicks Premium by subscribing to
-                    the premium plan within the extension&apos;s settings. Once
-                    subscribed, you&apos;ll gain access to exclusive features
-                    and benefits.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-5">
-                  <AccordionTrigger className="font-semibold text-lg">
-                    Can I use CopyIn2Clicks on multiple devices?
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    Yes, CopyIn2Clicks syncs your clipboard across multiple
-                    devices, allowing you to seamlessly access your copied
-                    content from anywhere.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-          </div>
-        </div>
-      </section>
-      {(!session?.user?.stripeSubscriptionId && status !== 'authenticated')&& (
+
+      {!session?.user?.stripeSubscriptionId && status == "authenticated" && (
         <section id="premium" className="py-5">
           <PremiumCheckout handleSubscription={handleSubscription} />
         </section>

@@ -38,16 +38,24 @@ export default function Signup() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+
+    if (!name) {
+      setError("Name is required");
+      toast.error("Name is required");
+      return;
+    }
 
     if (!isValidEmail(email)) {
       setError("Email is invalid");
+      toast.error("Email is invalid");
       return;
     }
 
     if (!password || password.length < 3) {
       setError("Password is invalid");
+      toast.error("Password must be at least 3 characters");
       return;
     }
 
@@ -65,17 +73,17 @@ export default function Signup() {
           password,
         }),
       });
+
       if (res.status === 400) {
         setError("This email is already registered");
         toast.error("This email is already registered");
-      }
-      if (res.status === 200) {
+      } else if (res.status === 200) {
         toast.success("User Registered");
         setError("");
         router.push("/login");
       }
     } catch (error) {
-      toast.error(error as string);
+      toast.error("Error, try again");
       setError("Error, try again");
       console.log(error);
     } finally {
@@ -139,7 +147,11 @@ export default function Signup() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between items-center gap-2">
-                  <Button className="" variant={"outline"} onClick={handleSubmit}>
+                  <Button
+                    className=""
+                    variant={"outline"}
+                    onClick={handleSubmit}
+                  >
                     Sign Up
                   </Button>
                   <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">

@@ -12,7 +12,7 @@ export function Landing() {
       <main className="flex-1 border-b">
         <HeroSection />
         <DemoSection />
-        <FeatureSection />
+        {/* <FeatureSection /> */}
         {/* <PricingSection /> */}
         {/* <Account /> */}
       </main>

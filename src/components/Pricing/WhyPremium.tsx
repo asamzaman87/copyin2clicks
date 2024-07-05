@@ -15,7 +15,7 @@ const WhyPremium = () => {
               <Card className="flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800  dark:hover:shadow-lg pt-14 px-4 md:px-14 pb-28">
                 <div className="mt-7">
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl lg:text-5xl">
-                    Why Upgrade to Premium?
+                    Why Keep Using Premium ?
                   </h2>
                   <div className="mt-7 mx-0 mb-20 border"></div>
                 </div>
@@ -79,13 +79,12 @@ const WhyPremium = () => {
                           NEW!
                         </span>
                         <h3 className="text-2xl md:text-3xl font-bold">
-                          Copy upto 5000 words
+                          No Copy Limit
                         </h3>
                       </div>
                       <p className="text-left mt-2">
-                        Copy up to 5000 words without any word restrictions.
-                        Ideal for long-form content and extensive data copying
-                        needs.
+                        Enjoy unlimited, unrestricted copying when using
+                        CopyIn2Clicks premium.
                       </p>
                     </div>
                   </div>

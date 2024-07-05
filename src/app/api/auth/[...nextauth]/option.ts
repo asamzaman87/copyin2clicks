@@ -73,7 +73,6 @@ export const options: NextAuthOptions = {
           email: user.email!,
           name: user.name!,
         });
-
         await User.findByIdAndUpdate(user.id, {
           stripeCustomerId: customer.id,
         });

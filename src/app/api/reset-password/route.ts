@@ -40,13 +40,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
       port: 587,
       secure: false,
       auth: {
-        user: "ashutosh.js@zestgeek.com",
-        pass: "bjkt kwne efds smyf",
+        user: "democraticdeveloper@gmail.com",
+        pass: "fxoz glsr fpex xlci",
       },
     });
 
     await transporter.sendMail({
-      from: "ashutosh.js@zestgeek.com",
+      from: "democraticdeveloper@gmail.com",
       to: user.email,
       subject: "Password Reset",
       html: `<p>You are receiving this because you (or someone else) have requested the reset of the password for your account.</p>
