@@ -54,7 +54,7 @@ const Header = () => {
               className="text-lg font-light hover:underline underline-offset-4"
               href="/faq"
             >
-              Faq
+              FAQ
             </Link>
             {status === "authenticated" ? (
               <div>
@@ -144,7 +144,7 @@ const Header = () => {
               href="/faq"
               onClick={toggleMenu}
             >
-              Faq
+              FAQ
             </Link>
             {status === "authenticated" ? (
               <>

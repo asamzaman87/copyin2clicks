@@ -135,12 +135,12 @@ const PricingSection: React.FC = () => {
     });
   };
 
-  if (isLoading || status === "loading") return <Loader />;
+  if (isLoading || status === "loading") return <Loader  />;
 
   return (
     <>
       {subscriptionData && (
-        <section className="w-full bg-white flex justify-center items-center  shadow-lg rounded-lg p-8">
+        <section className="w-full min-h-screen  bg-white flex justify-center items-center  shadow-lg rounded-lg p-8">
           <div className="space-y-4 ">
             <Card className="w-full max-w-md">
               <CardHeader>
@@ -212,7 +212,7 @@ const PricingSection: React.FC = () => {
         </section>
       )}
       <>
-        {!session?.user?.stripeSubscriptionId && status == "authenticated" && (
+        {!session?.user?.stripeSubscriptionId && (
           <section
             className="w-full flex justify-center items-center py-12  md:py-20 lg:py-24"
             id="pricing"
@@ -420,10 +420,9 @@ const PricingSection: React.FC = () => {
           </section>
         )}
       </>
+      {!session?.user?.stripeSubscriptionId && <WhyPremium />}
 
-      <WhyPremium />
-
-      {!session?.user?.stripeSubscriptionId && status == "authenticated" && (
+      {!session?.user?.stripeSubscriptionId && (
         <section id="premium" className="py-5">
           <PremiumCheckout handleSubscription={handleSubscription} />
         </section>

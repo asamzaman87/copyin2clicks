@@ -7,7 +7,7 @@ import {
 export default function page() {
     return (
         <>
-     <section className="w-full flex justify-center items-center py-12 md:py-24 lg:py-32">
+     <section className="w-full min-h-screen flex justify-center items-center py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center">
             <div className="w-full max-w-4xl space-y-4">

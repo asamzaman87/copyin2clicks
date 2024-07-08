@@ -42,7 +42,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         metadata: {
           payingUserId: session.user.id,
         },
-        trial_period_days: 1,
+        trial_period_days: 7,
       },
     });
 
