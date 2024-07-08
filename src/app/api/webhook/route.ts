@@ -3,13 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 import stripe from "@/lib/stripe";
 import User from "@/lib/model/userModel";
 import dbConnect from "@/lib/dbConnect";
-
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-console.log('webhookSecret', webhookSecret)
+import { headers } from "next/headers";
 export async function POST(req: NextRequest) {
   try {
     const buf = await req.text();
-    const sig = req.headers.get("stripe-signature");
+    const sig = headers().get("stripe-signature");
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
     if (!sig) {
       console.log(`⚠️ Webhook signature is null.`);
