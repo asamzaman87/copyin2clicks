@@ -54,7 +54,6 @@ const PricingSection: React.FC = () => {
   const [isLoading, setisLoading] = useState(false);
 
   const [subscriptionData, setSubscriptionData] = useState<subscriptionData>();
-  console.log(subscriptionData, "subscriptionData234567");
 
   const parseQueryParams = () => {
     const query = new URLSearchParams(window.location.search);
@@ -139,7 +138,7 @@ const PricingSection: React.FC = () => {
 
   return (
     <>
-      {subscriptionData && (
+      {subscriptionData && session?.user?.stripeSubscriptionId && (
         <section className="w-full min-h-screen  bg-white flex justify-center items-center  shadow-lg rounded-lg p-8">
           <div className="space-y-4 ">
             <Card className="w-full max-w-md">
