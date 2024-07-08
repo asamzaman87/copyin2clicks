@@ -1,10 +1,13 @@
 import PricingSection from "@/components/Pricing/PricingSection";
+import { Suspense } from "react";
+import Loading from "../loading";
 
 export default async function premium() {
-
   return (
     <>
-      <PricingSection />
+      <Suspense fallback={<Loading/>}>
+        <PricingSection />
+      </Suspense>
     </>
   );
 }

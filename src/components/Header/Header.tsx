@@ -12,8 +12,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+  const pathname = usePathname();
+
   const { data: session, status } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -31,33 +34,25 @@ const Header = () => {
           </div>
         </Link>
         <nav className="flex items-center gap-4 sm:gap-6">
-          <div className="hidden md:flex gap-4">
-            <Link
-              className="text-lg font-light hover:underline underline-offset-4"
-              href="/download"
-            >
-              Download
-            </Link>
-            <Link
-              className="text-lg font-light hover:underline underline-offset-4"
-              href="/about"
-            >
-              About
-            </Link>
-            <Link
-              className="text-lg font-light hover:underline underline-offset-4"
-              href="/premium"
-            >
-              Premium
-            </Link>
-            <Link
-              className="text-lg font-light hover:underline underline-offset-4"
-              href="/faq"
-            >
-              FAQ
-            </Link>
+          <div className="hidden md:flex justify-center items-center gap-4">
+            {[
+              { href: "/download", label: "Download" },
+              { href: "/about", label: "About" },
+              { href: "/premium", label: "Premium" },
+              { href: "/faq", label: "FAQ" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                className={`text-lg font-light hover:underline underline-offset-4 ${
+                  pathname === link.href ? "font-bold underline text-blue-400" : ""
+                }`}
+                href={link.href}
+              >
+                {link.label}
+              </Link>
+            ))}
             {status === "authenticated" ? (
-              <div>
+              <>
                 <DropdownMenu>
                   <DropdownMenuTrigger className="outline-none">
                     <Avatar>
@@ -88,10 +83,12 @@ const Header = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </div>
+              </>
             ) : (
               <Link
-                className="text-lg font-light hover:underline underline-offset-4"
+                className={`text-lg font-light hover:underline underline-offset-4 ${
+                  pathname === "/login" ? "font-bold underline" : ""
+                }`}
                 href="/login"
               >
                 Login
@@ -117,50 +114,38 @@ const Header = () => {
         </nav>
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 w-full bg-white border-t border-gray-300 z-10">
-            <Link
-              className="block px-4 py-2 text-lg font-light hover:bg-gray-200"
-              href="/download"
-              onClick={toggleMenu}
-            >
-              Download
-            </Link>
-            <Link
-              className="block px-4 py-2 text-lg font-light hover:bg-gray-200"
-              href="/about"
-              onClick={toggleMenu}
-            >
-              About
-            </Link>
-            <Link
-              className="block px-4 py-2 text-lg font-light hover:bg-gray-200"
-              href="/premium"
-              onClick={toggleMenu}
-            >
-              Premium
-            </Link>
-
-            <Link
-              className="block px-4 py-2 text-lg font-light hover:bg-gray-200"
-              href="/faq"
-              onClick={toggleMenu}
-            >
-              FAQ
-            </Link>
+            {[
+              { href: "/download", label: "Download" },
+              { href: "/about", label: "About" },
+              { href: "/premium", label: "Premium" },
+              { href: "/faq", label: "FAQ" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                className={`block px-4 py-2 text-lg font-light hover:bg-gray-200 ${
+                  pathname === link.href ? "font-bold underline" : ""
+                }`}
+                href={link.href}
+                onClick={toggleMenu}
+              >
+                {link.label}
+              </Link>
+            ))}
             {status === "authenticated" ? (
-              <>
-                <button
-                  className="block w-full text-left px-4 py-2 text-lg font-light hover:bg-gray-200"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    signOut();
-                  }}
-                >
-                  Logout
-                </button>
-              </>
+              <button
+                className="block w-full text-left px-4 py-2 text-lg font-light hover:bg-gray-200"
+                onClick={(e) => {
+                  e.preventDefault();
+                  signOut();
+                }}
+              >
+                Logout
+              </button>
             ) : (
               <Link
-                className="block px-4 py-2 text-lg font-light hover:bg-gray-200"
+                className={`block px-4 py-2 text-lg font-light hover:bg-gray-200 ${
+                  pathname === "/login" ? "font-bold underline" : ""
+                }`}
                 href="/login"
                 onClick={toggleMenu}
               >
