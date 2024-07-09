@@ -459,7 +459,7 @@ console.log(subscriptionData, 'subscriptionData')
       )}
       <WhyPremium stripeSubscriptionId={session?.user?.stripeSubscriptionId} />
 
-      {!session?.user?.stripeSubscriptionId && (
+      {!subscriptionData?.subscriptions?.id && (
         <section id="premium" className="py-5">
           <PremiumCheckout handleSubscription={handleSubscription} />
         </section>
