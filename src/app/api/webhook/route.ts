@@ -39,14 +39,14 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
       case "customer.subscription.created":
       case "customer.subscription.updated": {
-        const isActive = !subscription.cancel_at_period_end;
+        // const isActive = !subscription.cancel_at_period_end;
 // console.log(isActive, 'isActiveisActiveisActive')
         await User.findOneAndUpdate(
           { stripeCustomerId: subscription.customer },
           {
             subscriptionStatus: subscription.status,
             stripeSubscriptionId: subscription.id,
-            isActive: isActive,
+            isActive: true,
           }
         );
         console.log(`Subscription ${event.type} handled: ${subscription.id}`);
