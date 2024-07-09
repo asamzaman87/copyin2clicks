@@ -200,7 +200,7 @@ console.log(subscriptionData, 'subscriptionData')
                     value={`Visa ending with 2222`}
                   />
                 </div>
-                {SubscriptionActive?.subscriptions?.cancel_at_period_end==='true' && (
+                {subscriptionData?.subscriptions?.cancel_at_period_end===false && (
                 <div className="grid gap-2">
                   <Label htmlFor="next-billing">Next Billing Date</Label>
                   <Input
@@ -214,8 +214,8 @@ console.log(subscriptionData, 'subscriptionData')
                 )}
                 <div className="flex flex-col gap-2">
                   <AlertDialog>
-                    {SubscriptionActive?.subscriptions
-                      ?.cancel_at_period_end ==='false' ? (
+                    {subscriptionData?.subscriptions
+                      ?.cancel_at_period_end ===false ? (
                       <AlertDialogTrigger className="border rounded-md py-2">
                         Cancel Subscription
                       </AlertDialogTrigger>
