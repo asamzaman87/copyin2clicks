@@ -89,7 +89,9 @@ console.log(subscriptionData, 'subscriptionData')
   };
 
   useEffect(() => {
+    if(status === 'authenticated'){
       fetchSubscriptionDetails();
+    }
   }, []);
 
   const handleSubscription = async (e: { preventDefault: () => void }) => {
