@@ -105,7 +105,7 @@ console.log(SubscriptionActive, 'SubscriptionActive')
         fetchSubscriptionDetails();
       }
     }
-  }, [session?.user?.stripeSubscriptionId]);
+  }, [session, status]);
 
   const handleSubscription = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
