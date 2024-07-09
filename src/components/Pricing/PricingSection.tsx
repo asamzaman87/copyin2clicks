@@ -45,6 +45,11 @@ interface subscriptionData {
     };
   };
 }
+interface SubscriptionActive {
+  subscriptions : any ;
+  id : string ;
+  cancel_at_period_end : boolean;
+}
 
 const PricingSection: React.FC = () => {
   const router = useRouter();
@@ -54,6 +59,7 @@ const PricingSection: React.FC = () => {
   const [isLoading, setisLoading] = useState(false);
 
   const [subscriptionData, setSubscriptionData] = useState<subscriptionData>();
+  const [SubscriptionActive, setSubscriptionActive] = useState<SubscriptionActive>();
 
   const parseQueryParams = () => {
     const query = new URLSearchParams(window.location.search);
@@ -117,6 +123,26 @@ const PricingSection: React.FC = () => {
       const res = await fetch("/api/cancel-subscription");
       const { subscription } = await res.json();
       console.log(subscription);
+
+      let endDate;
+      if (
+        subscription.trial_end &&
+        new Date(subscription.trial_end * 1000) > new Date()
+      ) {
+        // User is in a trial period
+        endDate = new Date(subscription.trial_end * 1000);
+      } else {
+        // User is not in a trial period, use current_period_end
+        endDate = new Date(subscription.current_period_end * 1000);
+      }
+
+      const today = new Date();
+      const diffTime = Math.abs(endDate.getTime() - today.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      console.log(diffDays, 'diffDaysdiffDaysdiffDays')
+      toast.success(`Your subscription will end in ${diffDays} day(s).`);
+      setSubscriptionActive(subscription);
+
       router.push("/");
     } catch (error) {
       console.log(error);
@@ -134,7 +160,7 @@ const PricingSection: React.FC = () => {
     });
   };
 
-  if (isLoading || status === "loading") return <Loader  />;
+  if (isLoading || status === "loading") return <Loader />;
 
   return (
     <>
@@ -170,6 +196,7 @@ const PricingSection: React.FC = () => {
                     value={`Visa ending with 2222`}
                   />
                 </div>
+                {SubscriptionActive?.subscriptions?.cancel_at_period_end && (
                 <div className="grid gap-2">
                   <Label htmlFor="next-billing">Next Billing Date</Label>
                   <Input
@@ -180,11 +207,20 @@ const PricingSection: React.FC = () => {
                     )}`}
                   />
                 </div>
+                )}
                 <div className="flex flex-col gap-2">
                   <AlertDialog>
-                    <AlertDialogTrigger className="border rounded-md py-2">
-                      Cancel Subscription
-                    </AlertDialogTrigger>
+                    {SubscriptionActive?.subscriptions
+                      ?.cancel_at_period_end ? (
+                      <AlertDialogTrigger className="border rounded-md py-2">
+                        Cancel Subscription
+                      </AlertDialogTrigger>
+                    ) : (
+                      <AlertDialogDescription>
+                        Your subscription has been cancelled.
+                      </AlertDialogDescription>
+                    )}
+
                     <AlertDialogContent className="bg-white text-black">
                       <AlertDialogHeader>
                         <AlertDialogTitle>
@@ -200,6 +236,7 @@ const PricingSection: React.FC = () => {
                         <AlertDialogCancel onClick={cancelSubscription}>
                           Cancel Subscription
                         </AlertDialogCancel>
+
                         <AlertDialogAction>Close</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -419,7 +456,7 @@ const PricingSection: React.FC = () => {
           </section>
         )}
       </>
-      {!session?.user?.stripeSubscriptionId && <WhyPremium />}
+      <WhyPremium stripeSubscriptionId={session?.user?.stripeSubscriptionId} />
 
       {!session?.user?.stripeSubscriptionId && (
         <section id="premium" className="py-5">

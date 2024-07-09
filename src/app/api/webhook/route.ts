@@ -39,22 +39,36 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
       case "customer.subscription.created":
       case "customer.subscription.updated": {
+        const isActive = !subscription.cancel_at_period_end;
+// console.log(isActive, 'isActiveisActiveisActive')
         await User.findOneAndUpdate(
           { stripeCustomerId: subscription.customer },
           {
             subscriptionStatus: subscription.status,
             stripeSubscriptionId: subscription.id,
-            isActive: true,
+            isActive: isActive,
           }
         );
         console.log(`Subscription ${event.type} handled: ${subscription.id}`);
         break;
       }
+      // case "customer.subscription.updated": {
+      //   await User.findOneAndUpdate(
+      //     { stripeCustomerId: subscription.customer },
+      //     {
+      //       subscriptionStatus: subscription.status,
+      //       isActive: subscription.cancel_at_period_end ? false : true,
+      //     }
+      //   );
+      //   console.log(`Subscription updated: ${subscription.id}`);
+      //   break;
+      // }
       case "customer.subscription.deleted":
         await User.findOneAndUpdate(
           { stripeCustomerId: subscription.customer },
           {
             subscriptionStatus: subscription.status,
+            stripeSubscriptionId: null, // Clear the subscription ID if needed
             isActive: false,
           }
         );
@@ -84,8 +98,3 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };

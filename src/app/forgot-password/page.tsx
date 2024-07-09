@@ -66,7 +66,7 @@ export default function ForgotPassword() {
                     </Button>
                   </form>
                   <div className="mt-4 text-center text-sm">
-                    Remember your password?
+                    Remember your password ?{' '}
                     <Link href="/login" className="underline" prefetch={false}>
                       Return to Login
                     </Link>
