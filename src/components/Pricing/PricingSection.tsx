@@ -164,7 +164,7 @@ console.log(session, 'session')
 
   return (
     <>
-      {session &&  session?.user?.stripeSubscriptionId ? (
+      {session?.user?.stripeSubscriptionId ? (
         <section className="w-full min-h-screen  bg-white flex justify-center items-center  shadow-lg rounded-lg p-8">
           <div className="space-y-4 ">
             <Card className="w-full max-w-md">
