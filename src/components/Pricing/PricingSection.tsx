@@ -60,7 +60,7 @@ const PricingSection: React.FC = () => {
 
   const [subscriptionData, setSubscriptionData] = useState<subscriptionData>();
   const [SubscriptionActive, setSubscriptionActive] = useState<SubscriptionActive>();
-console.log(session, 'session')
+console.log(subscriptionData, 'subscriptionData')
   const parseQueryParams = () => {
     const query = new URLSearchParams(window.location.search);
     if (query.get("success")) {
@@ -75,8 +75,8 @@ console.log(session, 'session')
   }, [sessionId]);
 
   const fetchSubscriptionDetails = async () => {
+    setisLoading(true);
     try {
-      setisLoading(true);
       const res = await fetch("/api/subscription-details");
       const subscriptions = await res.json();
       console.log(subscriptions, "sddsgfgnh");
@@ -89,10 +89,8 @@ console.log(session, 'session')
   };
 
   useEffect(() => {
-    if (session?.user.stripeSubscriptionId && status === "authenticated" ) {
       fetchSubscriptionDetails();
-    }
-  }, [status]);
+  }, []);
 
   const handleSubscription = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -164,7 +162,7 @@ console.log(session, 'session')
 
   return (
     <>
-      {session?.user?.stripeSubscriptionId ? (
+      {subscriptionData ? (
         <section className="w-full min-h-screen  bg-white flex justify-center items-center  shadow-lg rounded-lg p-8">
           <div className="space-y-4 ">
             <Card className="w-full max-w-md">
