@@ -100,7 +100,7 @@ console.log(subscriptionData, 'subscriptionData')
         "/api/create-checkout-session"
       );
       console.log("response", response);
-      router.replace(response.data.url);
+      router.replace(response?.data?.url);
     } catch (error: any) {
       toast.error(error);
       if (axios.isAxiosError(error)) {
@@ -158,11 +158,15 @@ console.log(subscriptionData, 'subscriptionData')
     });
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return(
+    <div className="min-h-screen">
+    <Loader />
+    </div>
+  ) 
 
   return (
     <>
-      {subscriptionData ? (
+      {subscriptionData?.subscriptions?.id ? (
         <section className="w-full min-h-screen  bg-white flex justify-center items-center  shadow-lg rounded-lg p-8">
           <div className="space-y-4 ">
             <Card className="w-full max-w-md">
@@ -180,7 +184,7 @@ console.log(subscriptionData, 'subscriptionData')
                     disabled
                     id="plan"
                     value={
-                      subscriptionData?.subscriptions.status === "trialing"
+                      subscriptionData?.subscriptions?.status === "trialing"
                         ? "Free Trial"
                         : "Premium"
                     }
@@ -451,11 +455,6 @@ console.log(subscriptionData, 'subscriptionData')
         </div>
       </section>
       )}
-      {/* <>
-        {!session?.user?.stripeSubscriptionId && (
-         
-        )}
-      </> */}
       <WhyPremium stripeSubscriptionId={session?.user?.stripeSubscriptionId} />
 
       {!session?.user?.stripeSubscriptionId && (
