@@ -34,7 +34,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           quantity: 1,
         },
       ],
-      payment_method_types : ['card', 'amazon_pay', 'paypal'],
+      // payment_method_types : ['card', 'amazon_pay', 'paypal'],
       mode: "subscription",
       customer: session.user.stripeCustomerId,
       success_url: `https://extension-landing-page-zeta.vercel.app/?success=true&session_id={CHECKOUT_SESSION_ID}`,
