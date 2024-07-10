@@ -457,7 +457,7 @@ console.log(subscriptionData, 'subscriptionData')
         </div>
       </section>
       )}
-      <WhyPremium stripeSubscriptionId={session?.user?.stripeSubscriptionId ?? ''} />
+      <WhyPremium />
 
       {!subscriptionData?.subscriptions?.id && (
         <section id="premium" className="py-5">

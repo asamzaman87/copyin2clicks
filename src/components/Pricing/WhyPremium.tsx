@@ -1,11 +1,10 @@
 import React from "react";
 import { Card } from "../ui/card";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
-interface WhyPremiumProps {
-  stripeSubscriptionId: string;
-}
-const WhyPremium: React.FC<WhyPremiumProps> = ({ stripeSubscriptionId }) => {
+const WhyPremium =() => {
+  const { data: session } = useSession();
   return (
     <>
       <section
@@ -18,7 +17,7 @@ const WhyPremium: React.FC<WhyPremiumProps> = ({ stripeSubscriptionId }) => {
               <Card className="flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800  dark:hover:shadow-lg pt-14 px-4 md:px-14 pb-28">
                 <div className="mt-7">
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl lg:text-5xl">
-                  {stripeSubscriptionId ? 'Why Keep Using Premium ?' : 'Why Upgrade to Premium ?'}   
+                  {session?.user.stripeSubscriptionId ? 'Why Keep Using Premium ?' : 'Why Upgrade to Premium ?'}   
                   </h2>
                   <div className="mt-7 mx-0 mb-20 border"></div>
                 </div>
