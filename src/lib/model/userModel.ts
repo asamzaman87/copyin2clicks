@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema({
   stripeSubscriptionId: {
     type: String,
   },
+  hasUsedTrial: { type: Boolean, default: false },
   emailVerified: {
     type: Date,
     default: Date.now,
