@@ -140,7 +140,7 @@ console.log(subscriptionData, 'subscriptionData')
       const diffTime = Math.abs(endDate.getTime() - today.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       console.log(diffDays, 'diffDaysdiffDaysdiffDays')
-      toast.success(`Your subscription will end in ${diffDays} day(s).`);
+      toast.success(`Your subscription will end in ${diffDays} days.`);
       setSubscriptionActive(subscription);
 
       router.push("/");
@@ -457,7 +457,7 @@ console.log(subscriptionData, 'subscriptionData')
         </div>
       </section>
       )}
-      <WhyPremium stripeSubscriptionId={session?.user?.stripeSubscriptionId} />
+      <WhyPremium stripeSubscriptionId={session?.user?.stripeSubscriptionId ?? ''} />
 
       {!subscriptionData?.subscriptions?.id && (
         <section id="premium" className="py-5">

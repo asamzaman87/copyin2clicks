@@ -3,7 +3,7 @@ import { Card } from "../ui/card";
 import Image from "next/image";
 
 interface WhyPremiumProps {
-  stripeSubscriptionId: string | null | undefined;
+  stripeSubscriptionId: string;
 }
 const WhyPremium: React.FC<WhyPremiumProps> = ({ stripeSubscriptionId }) => {
   return (
