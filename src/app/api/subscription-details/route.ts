@@ -23,9 +23,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         { status: 404 }
       );
     }
-  // const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
 
-    const subscriptions = await stripe.subscriptions.retrieve(session.user.stripeSubscriptionId as string);
+    const subscriptions = await stripe.subscriptions.retrieve(
+      session.user.stripeSubscriptionId as string,
+      {
+        expand: ["default_payment_method"]
+      }
+      );
 
     return NextResponse.json({ subscriptions }, { status: 200 });
   } catch (error: any) {

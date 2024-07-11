@@ -41,14 +41,10 @@ interface subscriptionData {
   current_period_end: number;
   default_payment_method?: {
     card?: {
+      brand: string;
       last4: string;
     };
   };
-}
-interface SubscriptionActive {
-  subscriptions : any ;
-  id : string ;
-  cancel_at_period_end : boolean;
 }
 
 const PricingSection: React.FC = () => {
@@ -57,10 +53,9 @@ const PricingSection: React.FC = () => {
   const [sessionId, setSessionId] = useState<string>("");
   const { data: session, status } = useSession();
   const [isLoading, setisLoading] = useState(false);
-
   const [subscriptionData, setSubscriptionData] = useState<subscriptionData>();
-  const [SubscriptionActive, setSubscriptionActive] = useState<SubscriptionActive>();
-console.log(subscriptionData, 'subscriptionData')
+  const [remainingDays, setRemainingDays] = useState<number | null>(null);
+
   const parseQueryParams = () => {
     const query = new URLSearchParams(window.location.search);
     if (query.get("success")) {
@@ -81,6 +76,7 @@ console.log(subscriptionData, 'subscriptionData')
       const subscriptions = await res.json();
       console.log(subscriptions, "sddsgfgnh");
       setSubscriptionData(subscriptions);
+      calculateRemainingDays(subscriptions);
     } catch (error) {
       console.log(error);
     } finally {
@@ -88,8 +84,26 @@ console.log(subscriptionData, 'subscriptionData')
     }
   };
 
+  const calculateRemainingDays = (subscriptions: subscriptionData) => {
+    const today = new Date();
+    let endDate;
+    if (
+      subscriptions?.subscriptions?.trial_end &&
+      new Date(subscriptions?.subscriptions?.trial_end * 1000) > today
+    ) {
+      endDate = new Date(subscriptions?.subscriptions?.trial_end * 1000);
+    } else {
+      endDate = new Date(
+        subscriptions?.subscriptions?.current_period_end * 1000
+      );
+    }
+    const diffTime = endDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    setRemainingDays(diffDays);
+  };
+
   useEffect(() => {
-    if(status === 'authenticated'){
+    if (status === "authenticated") {
       fetchSubscriptionDetails();
     }
   }, []);
@@ -122,28 +136,8 @@ console.log(subscriptionData, 'subscriptionData')
     try {
       const res = await fetch("/api/cancel-subscription");
       const { subscription } = await res.json();
-      console.log(subscription);
-
-      let endDate;
-      if (
-        subscription.trial_end &&
-        new Date(subscription.trial_end * 1000) > new Date()
-      ) {
-        // User is in a trial period
-        endDate = new Date(subscription.trial_end * 1000);
-      } else {
-        // User is not in a trial period, use current_period_end
-        endDate = new Date(subscription.current_period_end * 1000);
-      }
-
-      const today = new Date();
-      const diffTime = Math.abs(endDate.getTime() - today.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      console.log(diffDays, 'diffDaysdiffDaysdiffDays')
-      toast.success(`Your subscription will end in ${diffDays} days.`);
-      setSubscriptionActive(subscription);
-
-      router.push("/");
+      calculateRemainingDays(subscription);
+      toast.success(`Your subscription will end in ${remainingDays} days.`);
     } catch (error) {
       console.log(error);
     } finally {
@@ -160,11 +154,12 @@ console.log(subscriptionData, 'subscriptionData')
     });
   };
 
-  if (isLoading) return(
-    <div className="min-h-screen">
-    <Loader />
-    </div>
-  ) 
+  if (isLoading)
+    return (
+      <div className="min-h-screen">
+        <Loader />
+      </div>
+    );
 
   return (
     <>
@@ -197,31 +192,33 @@ console.log(subscriptionData, 'subscriptionData')
                   <Input
                     disabled
                     id="payment"
-                    value={`Visa ending with 2222`}
+                    value={`${subscriptionData?.subscriptions?.default_payment_method?.card?.brand} ending with ${subscriptionData?.subscriptions?.default_payment_method?.card?.last4}`}
                   />
                 </div>
-                {subscriptionData?.subscriptions?.cancel_at_period_end===false && (
-                <div className="grid gap-2">
-                  <Label htmlFor="next-billing">Next Billing Date</Label>
-                  <Input
-                    disabled
-                    id="next-billing"
-                    value={`${formatDate(
-                      subscriptionData?.subscriptions.current_period_end
-                    )}`}
-                  />
-                </div>
+                {subscriptionData?.subscriptions?.cancel_at_period_end ===
+                  false && (
+                  <div className="grid gap-2">
+                    <Label htmlFor="next-billing">Next Billing Date</Label>
+                    <Input
+                      disabled
+                      id="next-billing"
+                      value={`${formatDate(
+                        subscriptionData?.subscriptions.current_period_end
+                      )}`}
+                    />
+                  </div>
                 )}
                 <div className="flex flex-col gap-2">
                   <AlertDialog>
-                    {subscriptionData?.subscriptions
-                      ?.cancel_at_period_end ===false ? (
+                    {subscriptionData?.subscriptions?.cancel_at_period_end ===
+                    false ? (
                       <AlertDialogTrigger className="border rounded-md py-2">
                         Cancel Subscription
                       </AlertDialogTrigger>
                     ) : (
                       <AlertDialogDescription>
-                        Your subscription has been cancelled.
+                        Your subscription has been cancelled. It will end in{" "}
+                        {remainingDays} days.
                       </AlertDialogDescription>
                     )}
 
@@ -250,212 +247,212 @@ console.log(subscriptionData, 'subscriptionData')
             </Card>
           </div>
         </section>
-      ):(
+      ) : (
         <section
-        className="w-full flex justify-center items-center py-12  md:py-20 lg:py-24"
-        id="pricing"
-      >
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center text-center">
-            <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm ">
-                Pricing
+          className="w-full flex justify-center items-center py-12  md:py-20 lg:py-24"
+          id="pricing"
+        >
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm ">
+                  Pricing
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  CopyIn2Clicks Tiers
+                </h2>
+                <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+                  Here are the plans that the CopyIn2Clicks currently offers.
+                </p>
               </div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                CopyIn2Clicks Tiers
-              </h2>
-              <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Here are the plans that the CopyIn2Clicks currently offers.
-              </p>
-            </div>
-            <div className="flex py-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10 max-w-4xl mx-auto">
-                <Card className="flex flex-col h-auto justify-evenly rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800  dark:hover:shadow-lg">
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-2xl sm:text-3xl font-bold text-center">
-                        Free
-                      </h3>
-                      <p className="text-center text-gray-500 dark:text-gray-400">
-                        Free copy-paste features and tools.
-                      </p>
+              <div className="flex py-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10 max-w-4xl mx-auto">
+                  <Card className="flex flex-col h-auto justify-evenly rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800  dark:hover:shadow-lg">
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-center">
+                          Free
+                        </h3>
+                        <p className="text-center text-gray-500 dark:text-gray-400">
+                          Free copy-paste features and tools.
+                        </p>
+                      </div>
+                      <div className="mt-6 space-y-2">
+                        <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 ">
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Copy any text in two clicks
+                            </span>
+                          </li>
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Automatically save up to 5 recently copied items
+                            </span>
+                          </li>
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Star copied items that you do not want to be
+                              automatically deleted
+                            </span>
+                          </li>
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Open copied text in new tab as well as ability to
+                              delete copied item
+                            </span>
+                          </li>
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Limit of 500 words per copy
+                            </span>
+                          </li>
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Customize copy controls including toggle to change
+                              copy key, store regular copied items, as well as
+                              for copying images
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="mt-4 flex flex-col gap-2 items-center">
+                        <Link
+                          href="#premium"
+                          className="w-full text-blue-500 border py-2 rounded-md font-semibold text-center"
+                        >
+                          Current
+                        </Link>
+                      </div>
                     </div>
-                    <div className="mt-6 space-y-2">
-                      <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 ">
-                        <li className="flex items-start">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Copy any text in two clicks
-                          </span>
-                        </li>
-                        <li className="flex items-start">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Automatically save up to 5 recently copied items
-                          </span>
-                        </li>
-                        <li className="flex items-start">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Star copied items that you do not want to be
-                            automatically deleted
-                          </span>
-                        </li>
-                        <li className="flex items-start">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Open copied text in new tab as well as ability
-                            to delete copied item
-                          </span>
-                        </li>
-                        <li className="flex items-start">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Limit of 500 words per copy
-                          </span>
-                        </li>
-                        <li className="flex items-start">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Customize copy controls including toggle to
-                            change copy key, store regular copied items, as
-                            well as for copying images
-                          </span>
-                        </li>
-                      </ul>
+                  </Card>
+                  <Card className="flex flex-col h-auto justify-between rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800  dark:hover:shadow-lg">
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-center">
+                          Pro
+                        </h3>
+                        <p className="text-center text-gray-500 dark:text-gray-400">
+                          Unlock advanced copy-paste features and tools.
+                        </p>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-3xl sm:text-4xl font-bold">
+                          $1.99
+                        </div>
+                        <div className="text-gray-500 dark:text-gray-400">
+                          per month
+                        </div>
+                      </div>
+                      <div className="mt-6 space-y-2">
+                        <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 ">
+                          <li className="flex items-center">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Everything that free tier includes
+                            </span>
+                          </li>
+                          <li className="flex items-center">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Store up to 15 recently copied items
+                            </span>
+                          </li>
+                          <li className="flex items-center">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Ability to maintain formatting upon copying
+                            </span>
+                          </li>
+                          <li className="flex items-start">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              No words restriction when it comes to copying
+                            </span>
+                          </li>
+                          <li className="flex items-center">
+                            <Image
+                              src="/tickmark.svg"
+                              width={25}
+                              height={25}
+                              alt="not-found"
+                            />
+                            <span className="ml-2">
+                              Download copied items as any extension
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                     <div className="mt-4 flex flex-col gap-2 items-center">
                       <Link
                         href="#premium"
                         className="w-full text-blue-500 border py-2 rounded-md font-semibold text-center"
                       >
-                        Current
+                        Upgrade to Pro
                       </Link>
                     </div>
-                  </div>
-                </Card>
-                <Card className="flex flex-col h-auto justify-between rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-800  dark:hover:shadow-lg">
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-2xl sm:text-3xl font-bold text-center">
-                        Pro
-                      </h3>
-                      <p className="text-center text-gray-500 dark:text-gray-400">
-                        Unlock advanced copy-paste features and tools.
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl sm:text-4xl font-bold">
-                        $1.99
-                      </div>
-                      <div className="text-gray-500 dark:text-gray-400">
-                        per month
-                      </div>
-                    </div>
-                    <div className="mt-6 space-y-2">
-                      <ul className="pl-6 space-y-1 text-left m-auto text-gray-700 ">
-                        <li className="flex items-center">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Everything that free tier includes
-                          </span>
-                        </li>
-                        <li className="flex items-center">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Store up to 15 recently copied items
-                          </span>
-                        </li>
-                        <li className="flex items-center">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Ability to maintain formatting upon copying
-                          </span>
-                        </li>
-                        <li className="flex items-start">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            No words restriction when it comes to copying
-                          </span>
-                        </li>
-                        <li className="flex items-center">
-                          <Image
-                            src="/tickmark.svg"
-                            width={25}
-                            height={25}
-                            alt="not-found"
-                          />
-                          <span className="ml-2">
-                            Download copied items as any extension
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex flex-col gap-2 items-center">
-                    <Link
-                      href="#premium"
-                      className="w-full text-blue-500 border py-2 rounded-md font-semibold text-center"
-                    >
-                      Upgrade to Pro
-                    </Link>
-                  </div>
-                </Card>
+                  </Card>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
       <WhyPremium />
 
