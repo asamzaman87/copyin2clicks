@@ -138,6 +138,7 @@ const PricingSection: React.FC = () => {
       const { subscription } = await res.json();
       calculateRemainingDays(subscription);
       toast.success(`Your subscription will end in ${remainingDays} days.`);
+      router.push('/')
     } catch (error) {
       console.log(error);
     } finally {
