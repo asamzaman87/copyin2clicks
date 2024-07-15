@@ -78,7 +78,7 @@ const PricingSection: React.FC = () => {
       setSubscriptionData(subscriptions);
       calculateRemainingDays(subscriptions);
     } catch (error) {
-      console.log(error);
+      toast.error(error as string);
     } finally {
       setisLoading(false);
     }
@@ -115,7 +115,6 @@ const PricingSection: React.FC = () => {
       const response = await axios.post<{ url: string }>(
         "/api/create-checkout-session"
       );
-      console.log("response", response);
       router.replace(response?.data?.url);
     } catch (error: any) {
       toast.error(error);
@@ -138,7 +137,7 @@ const PricingSection: React.FC = () => {
       const { subscription } = await res.json();
       calculateRemainingDays(subscription);
       toast.success(`Your subscription will end in ${remainingDays} days.`);
-      router.push('/')
+      router.push("/");
     } catch (error) {
       console.log(error);
     } finally {
@@ -161,6 +160,8 @@ const PricingSection: React.FC = () => {
         <Loader />
       </div>
     );
+
+  const days = remainingDays === 1 ? "day" : "days";
 
   return (
     <>
@@ -219,7 +220,7 @@ const PricingSection: React.FC = () => {
                     ) : (
                       <AlertDialogDescription>
                         Your subscription has been cancelled. It will end in{" "}
-                        {remainingDays} days.
+                        {remainingDays} {days}.
                       </AlertDialogDescription>
                     )}
 
