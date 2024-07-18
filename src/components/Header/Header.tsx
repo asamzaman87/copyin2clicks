@@ -58,17 +58,17 @@ const Header = () => {
                     <Avatar>
                       <AvatarImage
                         src={
-                          session?.user?.image ||
+                          session?.user?.image ??
                           "https://github.com/shadcn.png"
                         }
                       />
-                      <AvatarFallback>
-                        {session?.user?.name || "User"}
-                      </AvatarFallback>
+                      {/* <AvatarFallback>
+                        {session?.user?.name ?? "User"}
+                      </AvatarFallback> */}
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
+                    <DropdownMenuLabel>{session?.user?.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <Link href="/premium">Subscription</Link>
