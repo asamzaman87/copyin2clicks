@@ -37,7 +37,6 @@ export const options: NextAuthOptions = {
               user.password
             );
             if (isPasswordCorrect) {
-              // Create Stripe customer if stripeCustomerId is not available
               if (!user.stripeCustomerId) {
                 const customer = await stripe.customers.create({
                   email: user.email,
@@ -72,26 +71,8 @@ export const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   pages: {
-    // signIn: "/",
-    // error: '/auth/error',
-    // signOut : ''
   },
   callbacks: {
-    // async signIn({ user }) {
-    //   await dbConnect();
-    //   const existingUser = await User.findById(user.id);
-      
-    //   if (!existingUser.stripeCustomerId) {
-    //     const customer = await stripe.customers.create({
-    //       email: user.email!,
-    //       name: user.name!,
-    //     });
-    //     await User.findByIdAndUpdate(user.id, {
-    //       stripeCustomerId: customer.id,
-    //     });
-    //   }
-    //   return true;
-    // },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;

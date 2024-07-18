@@ -10,6 +10,7 @@ import { options } from "../auth/[...nextauth]/option";
  * @param request An instance of NextRequest containing the JSON payload .
  * @returns A NextResponse object with a JSON body containing the checkout session URL and a status of 200 on success, or an error message and a status of 500 on failure.
  */
+
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     await dbConnect();
