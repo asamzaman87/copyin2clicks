@@ -48,12 +48,19 @@ export async function POST(req: NextRequest, res: NextResponse) {
     await transporter.sendMail({
       from: process.env.SMTP_EMAIL,
       to: user.email,
-      subject: "Password Reset",
-      html: `<p>You are receiving this because you (or someone else) have requested the reset of the password for your account.</p>
-      <p>Please click on the following link, or paste this into your browser to complete the process:</p>
-      <p><a href="https://extension-landing-page-zeta.vercel.app/forgot-password/${resetToken}">Reset Password</a></p>
-      <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>`,
+      subject: "CopyIn2Clicks Password Reset",
+      html: `
+        <p>Dear ${user.name || 'User'},</p>
+        <p>You are receiving this email because a password reset request was made for your CopyIn2Clicks account. If you did not request this, please disregard this email and your password will remain unchanged.</p>
+        <p>To reset your password, please click on the link below or copy and paste it into your browser:</p>
+        <p><a href="https://extension-landing-page-zeta.vercel.app/forgot-password/${resetToken}">Reset Password</a></p>
+        <p>This link will expire in 1 hour.</p>
+        <p>If you have any questions or need further assistance, please contact our support team.</p>
+        <p>Best regards,</p>
+        <p>CopyIn2Clicks Team</p>
+      `,
     });
+    
 
     return NextResponse.json({ message: "Email sent" }, { status: 200 });
   } catch (error: any) {
