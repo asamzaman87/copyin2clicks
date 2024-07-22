@@ -42,23 +42,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    const hasUsedTrial = user.hasUsedTrial; // Assuming `hasUsedTrial` is a field in your user schema
+    // const hasUsedTrial = user.hasUsedTrial; // Assuming `hasUsedTrial` is a field in your user schema
 
-    const subscriptionData: { metadata: { payingUserId: string }; trial_period_days?: number } = {
-      metadata: {
-        payingUserId: session.user.id,
-      },
-    };
+    // const subscriptionData: { metadata: { payingUserId: string }; trial_period_days?: number } = {
+    //   metadata: {
+    //     payingUserId: session.user.id,
+    //   },
+    // };
 
-    if (!hasUsedTrial) {
-      subscriptionData.trial_period_days = 1;
-      // Mark the user as having used the trial after creating the session
-      user.hasUsedTrial = true;
-      await user.save();
-    }
+    // if (!hasUsedTrial) {
+    //   subscriptionData.trial_period_days = 1;
+    //   // Mark the user as having used the trial after creating the session
+    //   user.hasUsedTrial = true;
+    //   await user.save();
+    // }
 
     const checkoutSession = await stripe.checkout.sessions.create({
       billing_address_collection: "auto",
+      payment_method_types: ['card', 'amazon_pay'],
       line_items: [
         {
           price: "price_1PeFzeDqnd1M4o5t9GUHQ4KT",
@@ -69,7 +70,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       customer: session.user.stripeCustomerId,
       success_url: `https://extension-landing-page-zeta.vercel.app/?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `https://extension-landing-page-zeta.vercel.app/?canceled=true`,
-      subscription_data: subscriptionData,
+      subscription_data: {
+        metadata: {
+          payingUserId: session.user.id,
+        },
+        trial_period_days : 1
+      }
     });
 
     return new NextResponse(JSON.stringify({ url: checkoutSession.url }), {

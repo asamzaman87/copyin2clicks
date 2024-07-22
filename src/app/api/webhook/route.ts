@@ -34,8 +34,8 @@ export async function POST(req: NextRequest) {
 
     const subscription = event.data.object as Stripe.Subscription;
     console.log("subscriptionsubscription", subscription);
-    
-    console.log('eventeventevent', event.type)
+
+    console.log("eventeventevent", event.type);
     switch (event.type) {
       case "customer.subscription.created":
       case "customer.subscription.updated": {
@@ -50,6 +50,21 @@ export async function POST(req: NextRequest) {
         console.log(`Subscription ${event.type} handled: ${subscription.id}`);
         break;
       }
+
+      case "checkout.session.completed": {
+        const session = event.data.object as Stripe.Checkout.Session;
+        if (session.mode === "subscription" && session.customer) {
+          await User.findOneAndUpdate(
+            { stripeCustomerId: session.customer },
+            {
+              hasUsedTrial: true,
+            }
+          );
+          console.log(`Checkout session completed: ${session.id}`);
+        }
+        break;
+      }
+
 
       case "customer.subscription.deleted":
         await User.findOneAndUpdate(
@@ -68,7 +83,9 @@ export async function POST(req: NextRequest) {
         break;
 
       case "entitlements.active_entitlement_summary.updated":
-        console.log(`Active entitlement summary updated for ${subscription.id}`);
+        console.log(
+          `Active entitlement summary updated for ${subscription.id}`
+        );
         break;
 
       default:
@@ -85,4 +102,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
