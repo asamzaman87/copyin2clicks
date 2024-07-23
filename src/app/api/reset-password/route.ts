@@ -53,7 +53,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         <p>Dear ${user.name || 'User'},</p>
         <p>You are receiving this email because a password reset request was made for your CopyIn2Clicks account. If you did not request this, please disregard this email and your password will remain unchanged.</p>
         <p>To reset your password, please click on the link below or copy and paste it into your browser:</p>
-        <p><a href="https://extension-landing-page-zeta.vercel.app/forgot-password/${resetToken}">Reset Password</a></p>
+        <p><a href="https://copyin2clicks.vercel.app/forgot-password/${resetToken}">Reset Password</a></p>
         <p>This link will expire in 1 hour.</p>
         <p>If you have any questions or need further assistance, please contact our support team.</p>
         <p>Best regards,</p>
