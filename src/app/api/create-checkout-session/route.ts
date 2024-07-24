@@ -68,8 +68,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ],
       mode: "subscription",
       customer: session.user.stripeCustomerId,
-      success_url: `https://copyin2clicks.vercel.app/?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `https://copyin2clicks.vercel.app/?canceled=true`,
+      success_url: `https://www.copyin2clicks.com/?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://www.copyin2clicks.com/?canceled=true`,
       subscription_data: {
         metadata: {
           payingUserId: session.user.id,
