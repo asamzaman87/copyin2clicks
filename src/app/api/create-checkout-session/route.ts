@@ -44,10 +44,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const checkoutSession = await stripe.checkout.sessions.create({
       billing_address_collection: "auto",
-      payment_method_types: ['card', 'amazon_pay'],
+      // payment_method_types: ['card', 'amazon_pay'],
       line_items: [
         {
           price: "price_1PeFzeDqnd1M4o5t9GUHQ4KT",
+          // price: "price_1PeCGuDqnd1M4o5tB9FF1NjV",
           quantity: 1,
         },
       ],
