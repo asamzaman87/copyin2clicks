@@ -347,8 +347,7 @@ const PricingSection: React.FC = () => {
                             />
                             <span className="ml-2">
                               Customize copy controls including toggle to change
-                              copy key, store regular copied items, as well as
-                              for copying images
+                              copy key, store regular copied items.
                             </span>
                           </li>
                         </ul>
