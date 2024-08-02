@@ -47,7 +47,10 @@ export const options: NextAuthOptions = {
                 await user.save();
               }
 
-              user.loginCount += 1;
+              if(!user?.loginCount){
+                user.loginCount = 1;
+
+              }
               await user.save();
 
               return {

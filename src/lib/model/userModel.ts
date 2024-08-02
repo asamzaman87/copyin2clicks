@@ -49,10 +49,7 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpires: {
     type: Date,
   },
-  loginCount: {
-    type: Number,
-    default: 0,
-  },
+  loginCount: Number,
   createdAt: {
     type: Date,
     default: Date.now,
