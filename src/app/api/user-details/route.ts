@@ -42,6 +42,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       isActive: user.isActive,
       subscriptionStatus: user.subscriptionStatus,
       stripeSubscriptionId: user.stripeSubscriptionId,
+      loginCount : user.loginCount
     },
     { status: 200 }
   );

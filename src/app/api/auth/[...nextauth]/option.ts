@@ -47,6 +47,9 @@ export const options: NextAuthOptions = {
                 await user.save();
               }
 
+              user.loginCount += 1;
+              await user.save();
+
               return {
                 id: user._id,
                 email: user.email,
@@ -57,6 +60,7 @@ export const options: NextAuthOptions = {
                 subscriptionStatus: user.subscriptionStatus,
                 stripeSubscriptionId: user.stripeSubscriptionId,
                 emailVerified: user.emailVerified,
+                loginCount: user.loginCount,
               };
             }
           }
@@ -84,6 +88,7 @@ export const options: NextAuthOptions = {
         token.subscriptionStatus = user.subscriptionStatus;
         token.stripeSubscriptionId = user.stripeSubscriptionId;
         token.emailVerified = user.emailVerified;
+        token.loginCount = user.loginCount;
       } else {
         await dbConnect();
         const dbUser = await User.findById(token.id);
@@ -96,6 +101,8 @@ export const options: NextAuthOptions = {
           token.subscriptionStatus = dbUser.subscriptionStatus;
           token.stripeSubscriptionId = dbUser.stripeSubscriptionId;
           token.emailVerified = dbUser.emailVerified;
+          token.loginCount = dbUser.loginCount;
+
         }
       }
       return token;
@@ -110,6 +117,8 @@ export const options: NextAuthOptions = {
       session.user.subscriptionStatus = token.subscriptionStatus as string;
       session.user.stripeSubscriptionId = token.stripeSubscriptionId as string;
       session.user.emailVerified = token.emailVerified as Date;
+      session.user.loginCount = token.loginCount as number;
+
 
       return session;
     },

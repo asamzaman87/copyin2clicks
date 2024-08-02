@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
         name,
         email,
         password: hashedPassword,
+        loginCount : 0
     });
  
     try {

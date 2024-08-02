@@ -11,6 +11,7 @@ declare module "next-auth" {
     emailVerified?: Date;
     account?: any[];
     session?: any[];
+    loginCount : number;
   }
 
   interface Session {
