@@ -53,6 +53,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  isNewUser: { type: Boolean, default: true },
   createdAt: {
     type: Date,
     default: Date.now,

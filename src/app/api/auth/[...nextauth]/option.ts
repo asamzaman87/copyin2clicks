@@ -46,7 +46,7 @@ export const options: NextAuthOptions = {
                 user.stripeCustomerId = customer.id;
                 await user.save();
               }
-
+              user.isNewUser = false;
               user.loginCount += 1;
               await user.save();
 
