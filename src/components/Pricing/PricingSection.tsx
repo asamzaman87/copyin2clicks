@@ -165,7 +165,7 @@ const PricingSection: React.FC = () => {
 
   return (
     <>
-      {subscriptionData?.subscriptions?.id ? (
+      {subscriptionData && subscriptionData?.subscriptions?.id ? (
         <section className="w-full min-h-screen  bg-white flex justify-center items-center  shadow-lg rounded-lg p-8">
           <div className="space-y-4 ">
             <Card className="w-full max-w-md">
@@ -177,6 +177,14 @@ const PricingSection: React.FC = () => {
               </CardHeader>
 
               <CardContent className="grid gap-6">
+                <div className="grid gap-2">
+                  <Label htmlFor="plan">Email</Label>
+                  <Input
+                    disabled
+                    id="email"
+                    value={session?.user?.email ?? 'null'}
+                  />
+                </div>
                 <div className="grid gap-2">
                   <Label htmlFor="plan">Current Plan</Label>
                   <Input
@@ -230,9 +238,9 @@ const PricingSection: React.FC = () => {
                           Are you absolutely sure?
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your subscription and remove your data from our
-                          servers.
+                          If you choose to cancel your subscription, then your
+                          access to premium will end once you reach your next
+                          billing date.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

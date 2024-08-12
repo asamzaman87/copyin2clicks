@@ -20,6 +20,14 @@ const rubik = Rubik({
   variable: "--font-rubik",
 });
 
+export const metadata = {
+  title: 'CopyIn2Clicks',
+  description : '',
+  icons: {
+    icon: './favicon.ico'
+  }
+} 
+
 
 export default async function RootLayout({
   children,
