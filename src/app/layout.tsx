@@ -25,9 +25,7 @@ export const metadata = {
   description : 'CopyIn2Clicks, the most popular text copying tool on Firefox and Chrome. Copy and save any text in just a mere two clicks.',
   icons: {
     icon: './favicon.ico'
-  },
-    metadataBase: new URL('https://www.copyin2clicks.com'),
-
+  }
 } 
 
 
@@ -40,10 +38,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="./favicon.ico"/>
-        <meta name="description" content="CopyIn2Clicks, the most popular text copying tool on Firefox and Chrome. Copy and save any text in just a mere two clicks." />
+      <meta name="google-site-verification" content="mBTQs9SYY4EXunBAffXSZtb5RI-kKRwSeBCKD9Txj00" />
       </head>
-      
       <body className={tenor_sans.variable + " " + rubik.variable}>
         <AuthProvider session={session}>
           <Header />
