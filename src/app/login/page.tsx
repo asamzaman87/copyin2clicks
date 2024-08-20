@@ -218,7 +218,7 @@ export default function Login() {
                     <AlertDialogCancel onClick={() => setIsDialogOpen(false)}>
                       Cancel
                     </AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDialogSubmit}>
+                    <AlertDialogAction onClick={handleDialogSubmit} disabled={isLoading}>
                       {isLoading && (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       )}

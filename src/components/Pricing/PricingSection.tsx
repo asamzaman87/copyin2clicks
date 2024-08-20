@@ -244,11 +244,11 @@ const PricingSection: React.FC = () => {
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel onClick={cancelSubscription}>
-                          Cancel Subscription
-                        </AlertDialogCancel>
+                        <AlertDialogCancel>Close</AlertDialogCancel>
 
-                        <AlertDialogAction>Close</AlertDialogAction>
+                        <AlertDialogAction onClick={cancelSubscription}>
+                          Cancel Subscription
+                        </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
