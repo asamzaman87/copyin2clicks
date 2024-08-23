@@ -44,14 +44,16 @@ const Header = () => {
               <Link
                 key={link.href}
                 className={`text-lg font-light hover:underline underline-offset-4 ${
-                  pathname === link.href ? "font-bold underline text-blue-400" : ""
+                  pathname === link.href
+                    ? "font-bold underline text-blue-400"
+                    : ""
                 }`}
                 href={link.href}
               >
                 {link.label}
               </Link>
             ))}
-            {status === "authenticated" ? (
+            {status == "authenticated" ? (
               <>
                 <DropdownMenu>
                   <DropdownMenuTrigger className="outline-none">
@@ -68,7 +70,12 @@ const Header = () => {
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuLabel>{session?.user?.name}</DropdownMenuLabel>
+                    <DropdownMenuLabel className="block">
+                      <div>{session?.user?.name}</div>
+                      <small className="text-gray-500 font-normal">
+                        {session?.user?.email}
+                      </small>
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <Link href="/premium">Subscription</Link>
