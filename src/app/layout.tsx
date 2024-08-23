@@ -22,12 +22,12 @@ const rubik = Rubik({
 
 export const metadata = {
   title: `CopyIn2Clicks | The world's fastest free copying tool`,
-  description : 'CopyIn2Clicks, the most popular text copying tool on Firefox and Chrome. Copy and save any text in just a mere two clicks.',
+  description:
+    "CopyIn2Clicks, the most popular text copying tool on Firefox and Chrome. Copy and save any text in just a mere two clicks.",
   icons: {
-    icon: './favicon.ico'
-  }
-} 
-
+    icon: "/favicon.ico",
+  },
+};
 
 export default async function RootLayout({
   children,
@@ -38,7 +38,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-      <meta name="google-site-verification" content="mBTQs9SYY4EXunBAffXSZtb5RI-kKRwSeBCKD9Txj00" />
+        <meta
+          name="google-site-verification"
+          content="mBTQs9SYY4EXunBAffXSZtb5RI-kKRwSeBCKD9Txj00"
+        />
       </head>
       <body className={tenor_sans.variable + " " + rubik.variable}>
         <AuthProvider session={session}>
