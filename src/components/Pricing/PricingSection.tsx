@@ -104,6 +104,7 @@ const PricingSection: React.FC = () => {
 
   useEffect(() => {
     if (status === "authenticated") {
+      console.log("Authenticated")
       fetchSubscriptionDetails();
     }
   }, []);
