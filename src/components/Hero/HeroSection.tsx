@@ -13,7 +13,7 @@ const HeroSection = () => {
                 Supercharge Your Copy-Paste Experience
               </h1>
               <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                Elevate your productivity with CopyIn2Clicks. Effortlessly copy and manage text from any website with advanced features and seamless syncing.
+                Elevate your productivity with CopyIn2Clicks. Effortlessly copy and manage text from any website with advanced features.
               </p>
             </div>
             <div className="flex flex-col gap-2">
@@ -32,7 +32,7 @@ const HeroSection = () => {
             </div>
           </div>
           <Image
-            className="h-full w-full rounded-xl"
+            className="h-auto w-full rounded-xl"
             src="/heroSection.png"
             alt="extension"
             height={500}

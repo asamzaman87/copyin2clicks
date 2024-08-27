@@ -9,7 +9,7 @@ const sections = [
     id: "what-is-CopyIn2Clicks",
     label: "What is CopyIn2Clicks?",
     content:
-      "CopyIn2Clicks is a powerful browser extension designed to enhance your clipboard experience. With CopyIn2Clicks, you can seamlessly copy and paste across different platforms and devices, saving you time and effort.",
+      "CopyIn2Clicks is a powerful browser extension designed to enhance your clipboard experience. With CopyIn2Clicks, you can seamlessly copy and paste within the same browser and device, saving you time and effort.",
   },
   {
     id: "features",
@@ -23,16 +23,16 @@ const sections = [
           </li>
           <li>
             <strong>Smart storage : </strong> Automatically save what you copy
-            and choose what you want saved across multiple copies.
+            and choose what you want saved within the same device and browser.
           </li>
-          <li>
+          {/* <li>
             <strong>Cross-platform compatibility : </strong> Use CopyIn2Clicks
             on various browsers and operating systems.
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <strong>Clipboard synchronization : </strong> Sync your clipboard
             content across multiple devices.
-          </li>
+          </li> */}
           <li>
             <strong>Customizable settings : </strong> Tailor CopyIn2Clicks to
             suit your preferences with customizable options.

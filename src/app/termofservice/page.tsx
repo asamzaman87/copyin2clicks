@@ -28,6 +28,14 @@ export default function TermofService() {
           </p>
         </section>
         <section>
+          <h2 className="text-2xl font-semibold">Storage of Copied Items</h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            The copied items managed by CopyIn2Clicks are stored using your browser's local storage. As a result, these items
+            are susceptible to deletion if your browser's local storage is cleared, if you uninstall the extension, or if there
+            are changes to your browser or system settings. We recommend regularly backing up any important data to avoid loss.
+          </p>
+        </section>
+        <section>
           <h2 className="text-2xl font-semibold">Privacy Policy</h2>
           <p className="text-gray-600 dark:text-gray-400">
             We respect your privacy. Our Privacy Policy explains how we collect, use, disclose, and protect your information

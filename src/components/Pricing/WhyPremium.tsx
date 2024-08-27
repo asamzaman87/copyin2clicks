@@ -113,7 +113,7 @@ const WhyPremium =() => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-col md:flex-row gap-6 md:gap-10 mb-16">
+                  {/* <div className="flex flex-col md:flex-row gap-6 md:gap-10 mb-16">
                     <Image
                       src="/sync.png"
                       alt="sync"
@@ -134,7 +134,7 @@ const WhyPremium =() => {
                         devices. Access your copied items anywhere, anytime.
                       </p>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex flex-col md:flex-row gap-6 md:gap-10 mb-16">
                     <Image
                       src="/security.png"

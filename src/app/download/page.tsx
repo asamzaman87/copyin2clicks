@@ -26,8 +26,8 @@ export default function Download() {
                 Click, Click, and You’re Done
               </h1>
               <p className="text-gray-600 font-extralight text-base sm:text-lg md:text-xl">
-                Effortlessly copy and manage your copied content across devices
-                and platforms.
+                Effortlessly copy and manage your content within the same device
+                and browser.
               </p>
             </div>
           </div>

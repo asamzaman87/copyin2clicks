@@ -59,7 +59,7 @@ export default function page() {
                     and benefits.
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-5">
+                {/* <AccordionItem value="item-5">
                   <AccordionTrigger className="font-semibold text-lg">
                     Can I use CopyIn2Clicks on multiple devices?
                   </AccordionTrigger>
@@ -68,7 +68,7 @@ export default function page() {
                     devices, allowing you to seamlessly access your copied
                     content from anywhere.
                   </AccordionContent>
-                </AccordionItem>
+                </AccordionItem> */}
               </Accordion>
             </div>
           </div>
