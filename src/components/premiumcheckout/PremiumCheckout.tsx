@@ -58,7 +58,7 @@ const PremiumCheckout: React.FC<Props> = ({ handleSubscription }) => {
             />
           </div>
         </div>
-        <div className="flex justify-end border-t border-gray-300 pt-4">
+        {/* <div className="flex justify-end border-t border-gray-300 pt-4">
           <Image
             className="mr-2"
             src="/checked-shield.svg"
@@ -67,7 +67,7 @@ const PremiumCheckout: React.FC<Props> = ({ handleSubscription }) => {
             alt="not-found"
           />
           <span>7-Day money-back guarantee</span>
-        </div>
+        </div> */}
       </form>
     </div>
   );
