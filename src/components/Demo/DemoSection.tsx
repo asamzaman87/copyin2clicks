@@ -22,7 +22,7 @@ const DemoSection = () => {
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/AIvoCOmYlfY"
+                src="https://www.youtube.com/embed/GAhEtkWDGlw"
                 title="CopyIn2Clicks Demo"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
