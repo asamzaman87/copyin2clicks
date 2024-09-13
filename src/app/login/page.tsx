@@ -209,8 +209,8 @@ export default function Login() {
                       Are you absolutely sure?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      Items currently saved in the extension will be replaced if
-                      you proceed with this log in. It is recommended to
+                      Items currently saved in the extension might be replaced
+                      if you proceed with this log in. It is recommended to
                       download those items before proceeding.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
@@ -218,7 +218,10 @@ export default function Login() {
                     <AlertDialogCancel onClick={() => setIsDialogOpen(false)}>
                       Cancel
                     </AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDialogSubmit} disabled={isLoading}>
+                    <AlertDialogAction
+                      onClick={handleDialogSubmit}
+                      disabled={isLoading}
+                    >
                       {isLoading && (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       )}
