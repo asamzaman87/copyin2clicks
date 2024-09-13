@@ -41,14 +41,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         { status: 404 }
       );
     }
+    const trialPeriodDays = user.hasUsedTrial ? 0 : 7; // If trial used, set to 0
+
+    if (!user.hasUsedTrial) {
+      user.hasUsedTrial = true;
+      await user.save();
+    }
 
     const checkoutSession = await stripe.checkout.sessions.create({
       billing_address_collection: "auto",
-      // payment_method_types: ['card', 'amazon_pay'],
       line_items: [
         {
           price: "price_1PeFzeDqnd1M4o5t9GUHQ4KT",
-          // price: "price_1PeCGuDqnd1M4o5tB9FF1NjV",
           quantity: 1,
         },
       ],
@@ -60,9 +64,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         metadata: {
           payingUserId: session.user.id,
         },
-        trial_period_days : 1
+        trial_period_days : trialPeriodDays
       }
     });
+
+ 
+
 
     return new NextResponse(JSON.stringify({ url: checkoutSession.url }), {
       status: 200,
