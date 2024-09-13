@@ -41,7 +41,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         { status: 404 }
       );
     }
-    const trialPeriodDays = user.hasUsedTrial ? 0 : 7; // If trial used, set to 0
+    const trialPeriodDays = user.hasUsedTrial ? 0 : 1; // If trial used, set to 0
 
     if (!user.hasUsedTrial) {
       user.hasUsedTrial = true;
