@@ -41,12 +41,23 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         { status: 404 }
       );
     }
-    const trialPeriodDays = user.hasUsedTrial ? 0 : 1; // If trial used, set to 0
+ 
+    const hasUsedTrial = user.hasUsedTrial; // Assuming `hasUsedTrial` is a field in your user schema
 
-    if (!user.hasUsedTrial) {
+    const subscriptionData: { metadata: { payingUserId: string }; trial_period_days?: number } = {
+      metadata: {
+        payingUserId: session.user.id,
+      },
+    };
+
+
+    if (!hasUsedTrial) {
+      subscriptionData.trial_period_days = 1;
+      // Mark the user as having used the trial after creating the session
       user.hasUsedTrial = true;
       await user.save();
     }
+
 
     const checkoutSession = await stripe.checkout.sessions.create({
       billing_address_collection: "auto",
@@ -60,12 +71,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       customer: session.user.stripeCustomerId,
       success_url: `https://www.copyin2clicks.com/?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `https://www.copyin2clicks.com/?canceled=true`,
-      subscription_data: {
-        metadata: {
-          payingUserId: session.user.id,
-        },
-        trial_period_days : trialPeriodDays
-      }
+      subscription_data: subscriptionData
     });
 
  
