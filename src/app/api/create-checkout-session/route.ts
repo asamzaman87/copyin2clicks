@@ -55,6 +55,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       subscriptionData.trial_period_days = 7;
     }
 
+    
 
     const checkoutSession = await stripe.checkout.sessions.create({
       billing_address_collection: "auto",
