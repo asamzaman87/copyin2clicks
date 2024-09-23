@@ -52,10 +52,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
 
     if (!hasUsedTrial) {
-      subscriptionData.trial_period_days = 1;
-      // Mark the user as having used the trial after creating the session
-      user.hasUsedTrial = true;
-      await user.save();
+      subscriptionData.trial_period_days = 7;
     }
 
 
