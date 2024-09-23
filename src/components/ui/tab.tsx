@@ -18,14 +18,14 @@ const Tabs = () => {
       id: "chrome",
       label: "Chrome",
       href: "https://chrome.google.com/webstore/detail/cfhdojbkjhnklbpkdaibdccddilifddb",
-      rating: 4.4, // Changed to number type
+      rating: 5, // Changed to number type
       reviewSource: "Chrome Web Store",
     },
     {
       id: "firefox",
       label: "Firefox",
-      href: "https://eyeo.to/adblockplus/firefox_install/",
-      rating: 4.6, // Changed to number type
+      href: "https://addons.mozilla.org/en-US/firefox/addon/copyin2clicks/",
+      rating: 5, // Changed to number type
       reviewSource: "Mozilla Add-ons",
     },
   ];
