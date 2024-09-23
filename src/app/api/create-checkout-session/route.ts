@@ -60,7 +60,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       billing_address_collection: "auto",
       line_items: [
         {
-          price: "price_1PeFzeDqnd1M4o5t9GUHQ4KT",
+          price: "price_1PeCGuDqnd1M4o5tB9FF1NjV",
           quantity: 1,
         },
       ],
