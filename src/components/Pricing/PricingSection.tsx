@@ -202,7 +202,18 @@ const PricingSection: React.FC = () => {
                   <Input
                     disabled
                     id="payment"
-                    value={`${subscriptionData?.subscriptions?.default_payment_method?.card?.brand} ending with ${subscriptionData?.subscriptions?.default_payment_method?.card?.last4}`}
+                    value={
+                      subscriptionData?.subscriptions?.default_payment_method
+                        ?.type === "card"
+                        ? `${subscriptionData?.subscriptions?.default_payment_method?.card?.brand} ending with ${subscriptionData?.subscriptions?.default_payment_method?.card?.last4}`
+                        : subscriptionData?.subscriptions
+                            ?.default_payment_method?.type === "amazon_pay"
+                        ? "Amazon Pay"
+                        : subscriptionData?.subscriptions
+                            ?.default_payment_method?.type === "cashapp"
+                        ? "Cash App"
+                        : "Payment method not available"
+                    }
                   />
                 </div>
                 {subscriptionData?.subscriptions?.cancel_at_period_end ===
