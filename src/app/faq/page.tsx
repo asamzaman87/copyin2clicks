@@ -47,17 +47,6 @@ export default function page()
                                         Yes, CopyIn2Clicks is completely free to use.
                                     </AccordionContent>
                                 </AccordionItem>
-
-                                {/* <AccordionItem value="item-5">
-                  <AccordionTrigger className="font-semibold text-lg">
-                    Can I use CopyIn2Clicks on multiple devices?
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    Yes, CopyIn2Clicks syncs your clipboard across multiple
-                    devices, allowing you to seamlessly access your copied
-                    content from anywhere.
-                  </AccordionContent>
-                </AccordionItem> */}
                             </Accordion>
                         </div>
                     </div>

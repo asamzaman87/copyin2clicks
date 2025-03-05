@@ -1,25 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import
-{
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
 
 const Header = () =>
 {
     const pathname = usePathname();
 
-    const { data: session, status } = useSession();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () =>
@@ -54,52 +43,6 @@ const Header = () =>
                                 {link.label}
                             </Link>
                         ))}
-                        {/* {status == "authenticated" ? (
-                            <>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger className="outline-none">
-                                        <Avatar>
-                                            <AvatarImage
-                                                src={
-                                                    session?.user?.image ??
-                                                    "https://github.com/shadcn.png"
-                                                }
-                                            />
-                                           
-                                        </Avatar>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent>
-                                        <DropdownMenuLabel className="block">
-                                            <div>{session?.user?.name}</div>
-                                            <small className="text-gray-500 font-normal">
-                                                {session?.user?.email}
-                                            </small>
-                                        </DropdownMenuLabel>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem>
-                                            <Link href="/premium">Subscription</Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem
-                                            onClick={(e) =>
-                                            {
-                                                e.preventDefault();
-                                                signOut();
-                                            }}
-                                        >
-                                            Logout
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </>
-                        ) : (
-                            <Link
-                                className={`text-lg font-light hover:underline underline-offset-4 ${pathname === "/login" ? "font-bold underline" : ""
-                                    }`}
-                                href="/login"
-                            >
-                                Login
-                            </Link>
-                        )} */}
                     </div>
                     <button className="md:hidden flex items-center" onClick={toggleMenu}>
                         <svg
