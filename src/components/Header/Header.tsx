@@ -5,14 +5,14 @@ import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import
-    {
-        DropdownMenu,
-        DropdownMenuContent,
-        DropdownMenuItem,
-        DropdownMenuLabel,
-        DropdownMenuSeparator,
-        DropdownMenuTrigger,
-    } from "@/components/ui/dropdown-menu";
+{
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
 
 const Header = () =>
@@ -46,15 +46,15 @@ const Header = () =>
                             <Link
                                 key={link.href}
                                 className={`text-lg font-light hover:underline underline-offset-4 ${pathname === link.href
-                                        ? "font-bold underline text-blue-400"
-                                        : ""
+                                    ? "font-bold underline text-blue-400"
+                                    : ""
                                     }`}
                                 href={link.href}
                             >
                                 {link.label}
                             </Link>
                         ))}
-                        {status == "authenticated" ? (
+                        {/* {status == "authenticated" ? (
                             <>
                                 <DropdownMenu>
                                     <DropdownMenuTrigger className="outline-none">
@@ -65,9 +65,7 @@ const Header = () =>
                                                     "https://github.com/shadcn.png"
                                                 }
                                             />
-                                            {/* <AvatarFallback>
-                        {session?.user?.name ?? "User"}
-                      </AvatarFallback> */}
+                                           
                                         </Avatar>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent>
@@ -101,7 +99,7 @@ const Header = () =>
                             >
                                 Login
                             </Link>
-                        )}
+                        )} */}
                     </div>
                     <button className="md:hidden flex items-center" onClick={toggleMenu}>
                         <svg
