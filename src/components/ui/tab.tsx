@@ -19,14 +19,12 @@ const Tabs = () =>
             id: "chrome",
             label: "Chrome",
             href: "https://chromewebstore.google.com/detail/copyin2clicks-click-click/pacfgbakjmgjngangdcnnfgpbpfichpm?authuser=0&hl=en",
-            rating: 5, // Changed to number type
             reviewSource: "Chrome Web Store",
         },
         {
             id: "firefox",
             label: "Firefox",
             href: "https://addons.mozilla.org/en-US/firefox/addon/copyin2clicks/",
-            rating: 5, // Changed to number type
             reviewSource: "Mozilla Add-ons",
         },
     ];
