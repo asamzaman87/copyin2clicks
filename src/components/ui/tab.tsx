@@ -18,7 +18,7 @@ const Tabs = () =>
         {
             id: "chrome",
             label: "Chrome",
-            href: "https://chromewebstore.google.com/detail/copyin2clicks-click-click/pacfgbakjmgjngangdcnnfgpbpfichpm?authuser=0&hl=en",
+            href: "https://chromewebstore.google.com/detail/copyin2clicks-copy-and-sa/pacfgbakjmgjngangdcnnfgpbpfichpm",
             reviewSource: "Chrome Web Store",
         },
         {
